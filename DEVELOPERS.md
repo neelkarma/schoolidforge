@@ -32,6 +32,7 @@ You can now start developing. `npm` scripts are listed below.
 - `npm run clean` - Deletes the `.cache` and `public` directories, freeing up space.
 
 ## Pull Request Guidelines
+
 - Don't delete the existing code and paste your own in. Git registers this as replacing the entire code, which makes reviewing your individual changes extremely difficult.
 - Explain what your PR has done in the description of it. There's no use if I have no idea what your code is doing.
 - Just use your common sense. This includes searching for duplicates before submitting, not introducing breaking changes, using a separate branch other than `master` for PRs, and the like.
