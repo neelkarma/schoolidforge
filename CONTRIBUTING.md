@@ -2,7 +2,7 @@ _Note: This is only for reporting bugs. If you want to develop for School IDForg
 
 To report bugs, follow these steps:
 
-1. **Before all, make sure that there isn't a duplicate of your issue already submitted!**
+1. **Before all, make sure that there isn't a duplicate of your issue already submitted in the [issues tab](../../issues/)!**
 2. Make sure you're signed in to your GitHub account (if you don't have one, make one).
 3. [Go to the issues tab of this repository.](../../issues/)
 4. Click on the "New Issue" button.

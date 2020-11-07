@@ -40,13 +40,13 @@ export default function Layout({ children }) {
             </Link>
             <a
               className="navbar-item"
-              href="https://github.com/neelkarma/schoolidforge/wiki/Quick-Start"
+              href="https://github.com/neelkarma/schoolidforge#usage"
             >
               Help
             </a>
             <a
               className="navbar-item"
-              href="https://github.com/neelkarma/schoolidforge/wiki/Reporting-Bugs"
+              href="https://github.com/neelkarma/schoolidforge/blob/master/CONTRIBUTING.md"
             >
               Report a Bug
             </a>
