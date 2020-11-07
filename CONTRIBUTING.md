@@ -1,4 +1,4 @@
-_Note: This is only for reporting bugs. If you want to develop for School IDForge, see [DEVELOPERS.md](../DEVELOPERS.md)._
+_Note: This is only for reporting bugs. If you want to develop for School IDForge, see [DEVELOPERS.md](./DEVELOPERS.md)._
 
 To report bugs, follow these steps:
 

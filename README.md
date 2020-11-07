@@ -52,8 +52,8 @@ _Note: This method is not recommended as it may or may not work depending on the
 
 ### Bug Reporting
 
-See [CONTRIBUTING.md](./blob/CONTRIBUTING.md)
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ### Developers
 
-See [DEVELOPERS.md](./blob/DEVELOPERS.md).
+See [DEVELOPERS.md](./DEVELOPERS.md).
