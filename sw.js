@@ -27,17 +27,17 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-f6e3fba1a5ccfda93ce5.js"
+    "url": "webpack-runtime-e2f08918943afca9eda6.js"
   },
   {
     "url": "framework-fc9659a3b74fac5c7369.js"
   },
   {
-    "url": "app-b3bcf11f3b9781d32cdb.js"
+    "url": "app-856ad4bdefd2a752ee00.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "6c79d780587c31d04ab7edcca28924a5"
+    "revision": "783c69582ac975b2de1e5617558fa5ef"
   },
   {
     "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-ad6431e4664bcf916d19.js"
@@ -48,55 +48,14 @@ self.__precacheManifest = [
   },
   {
     "url": "page-data/app-data.json",
-    "revision": "112cd4cdd80ad97022f39be75365a981"
+    "revision": "9c771748c7d340f13ef719a0c35a4918"
   },
   {
     "url": "polyfill-98d0d39eedcf3238f399.js"
   },
   {
-    "url": "styles.ff18b995fbe4c335bccd.css"
-  },
-  {
-    "url": "styles-e9d24b1846c7d6eb9685.js"
-  },
-  {
-    "url": "ce6ce642-4616d0c23be4d6be8f51.js"
-  },
-  {
-    "url": "72617ee7d554331777f73e5b9f1bca69bcb5d6ae-fb9b16f05abe8b1244ae.js"
-  },
-  {
-    "url": "component---src-pages-index-js-578728ba6078dc8ebe37.js"
-  },
-  {
-    "url": "page-data/index/page-data.json",
-    "revision": "3566c2336ea7857865cd7ac90438f242"
-  },
-  {
-    "url": "page-data/sq/d/2524108785.json",
-    "revision": "f91108589bfb6520754a85e2549f5179"
-  },
-  {
-    "url": "component---src-pages-about-js-c37274a829958001c642.js"
-  },
-  {
-    "url": "page-data/about/page-data.json",
-    "revision": "c91f2345dcc3387dcdda58c1c04fd4e5"
-  },
-  {
-    "url": "page-data/sq/d/1390012443.json",
-    "revision": "184a2c4771346c0fdf835fe0659d83c7"
-  },
-  {
-    "url": "component---src-pages-changelog-js-134ee21011c4d10043ac.js"
-  },
-  {
-    "url": "page-data/changelog/page-data.json",
-    "revision": "ab5dea1432e8343ad05c59d7276c274b"
-  },
-  {
     "url": "manifest.webmanifest",
-    "revision": "708af212b96c9b046b6a92af68147b24"
+    "revision": "8ea9d17059f5bd99e8ec4efac94fa38b"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
@@ -188,7 +147,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/app-b3bcf11f3b9781d32cdb.js`))) {
+  if (!resources || !(await caches.match(`/app-856ad4bdefd2a752ee00.js`))) {
     return await fetch(event.request)
   }
 
