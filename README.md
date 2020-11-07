@@ -19,7 +19,7 @@ From here you can either print it out and scan it (recommended) or you can scan 
 
 ### Printing the Barcode (Recommended)
 
-1. Follow the steps in the Quick Start (preferably on a computer with access to a printer).
+1. Follow the steps in the [Quick Start](#quick-start) (preferably on a computer with access to a printer).
 2. Save the barcode using the "Save" button in the top-right of the screen.
 3. Open Microsoft Word or Google Docs and create a new document.
 4. Make sure the page colour is white.
@@ -33,7 +33,7 @@ From here you can either print it out and scan it (recommended) or you can scan 
 
 _Note: This method is not recommended as it may or may not work depending on the type of the phone you have._
 
-1. Follow the steps in the Quick Start **on a phone**.
+1. Follow the steps in the [Quick Start](#quick-start) **on a phone**.
 2. Make sure your phone's brightness is set to max.
 3. Open the "Options" menu and adjust the "Barcode Size" until it fits the size of the scanner.
 4. Scan the barcode.
@@ -57,3 +57,11 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 ### Developers
 
 See [DEVELOPERS.md](./DEVELOPERS.md).
+
+## About
+
+See [ABOUT.md](./ABOUT.md)
+
+## License
+
+School IDForge is licensed under the [GNU General Public License v3.0](./LICENSE).
