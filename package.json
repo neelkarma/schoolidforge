@@ -2,7 +2,7 @@
   "name": "schoolidforge",
   "private": true,
   "description": "A simple tool that generates an ID Card Barcode from a Student ID.",
-  "version": "25.10.20",
+  "version": "07.11.20",
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
