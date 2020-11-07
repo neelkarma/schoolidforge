@@ -64,4 +64,4 @@ See [ABOUT.md](./ABOUT.md)
 
 ## License
 
-School IDForge is licensed under the [GNU General Public License v3.0](./LICENSE).
+School IDForge is [licensed under MIT](./LICENSE).

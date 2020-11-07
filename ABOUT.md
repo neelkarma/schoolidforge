@@ -4,7 +4,7 @@
 
 ### Made with ❤️ by chickensalt
 
-_Licensed under GNU GPL v3_
+_Licensed under MIT_
 
 Acknowledgements:
 

@@ -3,7 +3,7 @@
   "private": true,
   "description": "A simple tool that generates an ID Card Barcode from a Student ID.",
   "version": "25.10.20",
-  "license": "GNU GPL v3",
+  "license": "MIT",
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",

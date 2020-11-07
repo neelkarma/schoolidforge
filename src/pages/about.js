@@ -28,7 +28,7 @@ export default function About() {
         Made with ❤️ by chickensalt
       </h3>
       <p>
-        Last Updated {site.siteMetadata.version} | Licensed under GNU GPL v3
+        Last Updated {site.siteMetadata.version} | Licensed under MIT
       </p>
     </Layout>
   );
