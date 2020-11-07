@@ -4,6 +4,7 @@
     "changes": [
       "+ Colour Coded Changelog",
       "* Improved Documentation",
+      "* Make changes to PWA Icons",
       "- Remove Offline Functionality to improve update accomodation"
     ]
   },

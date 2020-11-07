@@ -5,7 +5,7 @@ module.exports = {
     keywords:
       "school,id,forge,idforge,school idforge,student,student id,school id",
     version: "07.11.20",
-    siteUrl: "https://schoolidforge.tk"
+    siteUrl: "https://schoolidforge.tk",
   },
   plugins: [
     `gatsby-plugin-sass`,
@@ -19,11 +19,11 @@ module.exports = {
         short_name: `IDForge`,
         start_url: `/`,
         background_color: `#2f3437`,
-        theme_color: `#2f3437c`,
+        theme_color: `#2f3437`,
         display: `standalone`,
-        icon: `src/assets/logo-512.png`,
+        icon: `src/assets/logo-512.png`
       },
     },
-    `gatsby-plugin-offline`
+    `gatsby-plugin-offline`,
   ],
 };
