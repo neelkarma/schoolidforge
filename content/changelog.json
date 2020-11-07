@@ -1,5 +1,13 @@
 [
   {
+    "title": "07.11.20 Update",
+    "changes": [
+      "+ Colour Coded Changelog",
+      "* Improved Documentation",
+      "- Remove Offline Functionality to improve update accomodation"
+    ]
+  },
+  {
     "title": "25.10.20 Update",
     "changes": [
       "+ Rewrite with Gatsby and Bulma",
