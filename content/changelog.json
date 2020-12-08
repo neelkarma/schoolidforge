@@ -1,5 +1,12 @@
 [
   {
+    "title": "08.12.20 Update",
+    "changes":[
+      "+ Migrate to TypeScript",
+      "* Minor Performance Improvements"
+    ]
+  },
+  {
     "title": "07.11.20 Update",
     "changes": [
       "+ Colour Coded Changelog",

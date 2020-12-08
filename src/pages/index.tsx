@@ -4,24 +4,51 @@ import Layout from "../components/layout";
 import SEO from "../components/seo";
 import bwipjs from "bwip-js";
 
-class Home extends Component {
+let outputDiv: HTMLDivElement;
+let outputDivBody: HTMLDivElement;
+
+let idInput: HTMLInputElement;
+let barcCanvas: HTMLCanvasElement;
+let barcWidthInput: HTMLInputElement;
+let barcHeightInput: HTMLInputElement;
+let barcQualityInput: HTMLInputElement;
+let includeTextCheckbox: HTMLInputElement;
+let saveBtn: HTMLButtonElement;
+
+export default class Home extends Component {
   componentDidMount() {
-    document.getElementById("barcCanvas").style.width = "150px";
-    document.getElementById("barcWidthInput").value = 150;
-    document.getElementById("barcHeightInput").value = 20;
-    document.getElementById("barcQualityInput").value = 10;
-    document.getElementById("includeTextCheckbox").checked = true;
-    document.getElementById("saveBtn").disabled = true;
+    outputDiv = document.getElementById("outputDiv") as HTMLDivElement;
+    outputDivBody = document.getElementById("outputDivBody") as HTMLDivElement;
+    idInput = document.getElementById("idInput") as HTMLInputElement;
+    barcCanvas = document.getElementById("barcCanvas") as HTMLCanvasElement;
+    barcWidthInput = document.getElementById(
+      "barcWidthInput"
+    ) as HTMLInputElement;
+    barcHeightInput = document.getElementById(
+      "barcHeightInput"
+    ) as HTMLInputElement;
+    barcQualityInput = document.getElementById(
+      "barcQualityInput"
+    ) as HTMLInputElement;
+    includeTextCheckbox = document.getElementById(
+      "includeTextCheckbox"
+    ) as HTMLInputElement;
+    saveBtn = document.getElementById("saveBtn") as HTMLButtonElement;
+
+    barcCanvas.style.width = "150px";
+    barcWidthInput.value = "150";
+    barcHeightInput.value = "20";
+    barcQualityInput.value = "10";
+    includeTextCheckbox.checked = true;
+    saveBtn.disabled = true;
   }
 
   saveBarc() {
-    document.getElementById("barcCanvas").toBlob(blob => {
+    barcCanvas.toBlob((blob) => {
       let blobUrl = URL.createObjectURL(blob);
       let blobAnchor = document.createElement("a");
       blobAnchor.href = blobUrl;
-      blobAnchor.download = `${document
-        .getElementById("idInput")
-        .value.trim()}-barcode`;
+      blobAnchor.download = `${idInput.value.trim()}-barcode`;
       blobAnchor.click();
       setTimeout(() => {
         blobAnchor.remove();
@@ -31,8 +58,7 @@ class Home extends Component {
   }
 
   handleBarcWidthChange() {
-    document.getElementById("barcCanvas").style.width =
-      document.getElementById("barcWidthInput").value + "px";
+    barcCanvas.style.width = barcWidthInput.value + "px";
   }
 
   toggleOptionsDiv() {
@@ -40,17 +66,14 @@ class Home extends Component {
   }
 
   forge() {
-    const idInput = document.getElementById("idInput");
-    document.getElementById("saveBtn").disabled = true;
-    document.getElementById("barcCanvas").classList.add("is-hidden");
+    saveBtn.disabled = true;
+    barcCanvas.classList.add("is-hidden");
     idInput.classList.remove("is-danger");
-    document.getElementById("outputDivBody").innerHTML = null;
-    document.getElementById("outputDiv").classList.add("is-hidden");
-    if (isNaN(idInput.value.trim())) {
-      document.getElementById(
-        "outputDivBody"
-      ).innerHTML = `"${idInput.value.trim()}" is not a valid Student ID!`;
-      document.getElementById("outputDiv").classList.remove("is-hidden");
+    outputDivBody.innerHTML = null;
+    outputDiv.classList.add("is-hidden");
+    if (isNaN(idInput.value.trim() as any)) {
+      outputDivBody.innerHTML = `"${idInput.value.trim()}" is not a valid Student ID!`;
+      outputDiv.classList.remove("is-hidden");
       idInput.classList.add("is-danger");
       return;
     }
@@ -58,28 +81,26 @@ class Home extends Component {
       return;
     }
     if (idInput.value.trim().length > 9) {
-      document.getElementById(
-        "outputDivBody"
-      ).innerHTML = `"${idInput.value.trim()}" is not a valid Student ID!`;
-      document.getElementById("outputDiv").classList.remove("is-hidden");
+      outputDivBody.innerHTML = `"${idInput.value.trim()}" is not a valid Student ID!`;
+      outputDiv.classList.remove("is-hidden");
       idInput.classList.add("is-danger");
       return;
     }
     try {
       bwipjs.toCanvas("barcCanvas", {
         bcid: "code128",
-        text: document.getElementById("idInput").value.trim(),
-        scale: document.getElementById("barcQualityInput").value,
-        height: document.getElementById("barcHeightInput").value,
-        includetext: document.getElementById("includeTextCheckbox").checked,
+        text: idInput.value.trim(),
+        scale: parseInt(barcQualityInput.value),
+        height: parseInt(barcHeightInput.value),
+        includetext: includeTextCheckbox.checked,
         textxalign: "center",
       });
-      document.getElementById("barcCanvas").classList.remove("is-hidden");
-      document.getElementById("saveBtn").disabled = false;
+      barcCanvas.classList.remove("is-hidden");
+      saveBtn.disabled = false;
     } catch (error) {
       idInput.classList.add("is-danger");
-      document.getElementById("outputDivBody").innerHTML = "Error: " + error;
-      document.getElementById("outputDiv").classList.remove("is-hidden");
+      outputDivBody.innerHTML = "Error: " + error;
+      outputDiv.classList.remove("is-hidden");
     }
   }
 
@@ -201,5 +222,3 @@ class Home extends Component {
     );
   }
 }
-
-export default Home;

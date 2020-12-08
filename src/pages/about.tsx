@@ -20,7 +20,7 @@ export default function About() {
   return (
     <Layout>
       <SEO title="About | School IDForge" />
-      <figure class="image">
+      <figure className="image">
         <img src={logo} style={{height: "12rem"}} />
       </figure>
       <h1 className="title">School IDForge</h1>

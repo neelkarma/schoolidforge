@@ -4,7 +4,7 @@ module.exports = {
       "School IDForge is a simple online tool that generates an ID Card Barcode from a Student ID.",
     keywords:
       "school,id,forge,idforge,school idforge,student,student id,school id",
-    version: "07.11.20",
+    version: "08.12.20",
     siteUrl: "https://schoolidforge.tk",
   },
   plugins: [

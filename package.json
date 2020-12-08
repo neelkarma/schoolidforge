@@ -9,9 +9,11 @@
     "develop": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "deploy": "gh-pages -d public"
+    "deploy": "gh-pages -d public",
+    "test": "node test.js"
   },
   "dependencies": {
+    "@types/bwip-js": "^2.0.0",
     "bulma": "^0.9.1",
     "bwip-js": "^2.0.11",
     "fs": "0.0.1-security",
