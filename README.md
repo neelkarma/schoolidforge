@@ -31,7 +31,7 @@ From here you can either print it out and scan it (recommended) or you can scan 
 
 ### Scanning Directly from a Phone
 
-_Note: This method is not recommended as it may or may not work depending on the type of the phone you have._
+_Note: This method is not recommended as it may or may not work depending on the type of the barcode scanner used._
 
 1. Follow the steps in the [Quick Start](#quick-start) **on a phone**.
 2. Make sure your phone's brightness is set to max.
@@ -64,4 +64,4 @@ See [ABOUT.md](./ABOUT.md)
 
 ## License
 
-School IDForge is [licensed under MIT](./LICENSE).
+School IDForge is licensed under [the MIT license](./LICENSE).
