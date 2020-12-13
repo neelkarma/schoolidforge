@@ -9,8 +9,7 @@
     "develop": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "deploy": "gh-pages -d public",
-    "test": "node test.js"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@types/bwip-js": "^2.0.0",
@@ -24,8 +23,8 @@
     "gatsby-plugin-robots-txt": "^1.5.3",
     "gatsby-plugin-sass": "^2.3.21",
     "gatsby-plugin-sitemap": "^2.4.17",
-    "gh-pages": "^3.1.0",
     "node-sass": "^4.14.1",
+    "prettier": "^2.2.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-helmet": "^6.1.0"

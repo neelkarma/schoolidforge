@@ -28,11 +28,12 @@ You can now start developing. `npm` scripts are listed below.
 - `npm run develop` - Runs `gatsby develop`, which basically makes a development server at `localhost:8000`. _Note: This server doesn't have HTTPS enabled._
 - `npm run build` - Builds a production version of the website in the `public` directory.
 - `npm run serve` - Serves the `public` directory at `localhost:9000`. Usually used after `npm run build`. _Note: This server doesn't have HTTPS enabled, either._
-- `npm run deploy` - Deploys the `public` directory to Github Pages, if set up. Usually used after `npm run build` and `npm run serve`.
 - `npm run clean` - Deletes the `.cache` and `public` directories, freeing up space.
+- `npm run format` - Uses `prettier` to format code.
 
 ## Pull Request Guidelines
 
 - Don't delete the existing code and paste your own in. Git registers this as replacing the entire code, which makes reviewing your individual changes extremely difficult.
+- Run `npm run format` before you submit your PR.
 - Explain what your PR has done in the description of it. There's no use if I have no idea what your code is doing.
 - Just use your common sense. This includes searching for duplicates before submitting, not introducing breaking changes, using a separate branch other than `master` for PRs, and the like.

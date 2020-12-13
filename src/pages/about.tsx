@@ -21,15 +21,13 @@ export default function About() {
     <Layout>
       <SEO title="About | School IDForge" />
       <figure className="image">
-        <img src={logo} style={{height: "12rem"}} />
+        <img src={logo} style={{ height: "12rem" }} />
       </figure>
       <h1 className="title">School IDForge</h1>
       <h3 className="subtitle" style={{ marginBottom: "0.35rem" }}>
         Made with ❤️ by chickensalt
       </h3>
-      <p>
-        Last Updated {site.siteMetadata.version} | Licensed under MIT
-      </p>
+      <p>Last Updated {site.siteMetadata.version} | Licensed under MIT</p>
     </Layout>
   );
 }
