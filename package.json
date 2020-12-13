@@ -9,7 +9,7 @@
     "develop": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "format": "prettier --write ."
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\""
   },
   "dependencies": {
     "@types/bwip-js": "^2.0.0",
