@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@types/bwip-js": "^2.0.0",
+    "@types/react-helmet": "^6.1.0",
     "bulma": "^0.9.1",
     "bwip-js": "^2.0.11",
     "fs": "0.0.1-security",
