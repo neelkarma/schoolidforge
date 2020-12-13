@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 
 export default function Layout({ children }) {
   return (
-    <div>
+    <>
       <section className="section">
         <div className="container" id="root">
           {children}
@@ -68,6 +68,6 @@ export default function Layout({ children }) {
           </div>
         </div>
       </nav>
-    </div>
+    </>
   );
 }
