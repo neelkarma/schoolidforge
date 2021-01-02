@@ -1,5 +1,9 @@
 [
   {
+    "title": "02.01.21 Update",
+    "changes": ["* Get forced to use new domain (thanks freenom)"]
+  },
+  {
     "title": "08.12.20 Update",
     "changes": ["+ Migrate to TypeScript", "* Minor Performance Improvements"]
   },
