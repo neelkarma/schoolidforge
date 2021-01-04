@@ -27,7 +27,7 @@ export default function About() {
       <h3 className="subtitle" style={{ marginBottom: "0.35rem" }}>
         Made with ❤️ by chickensalt
       </h3>
-      <p>Last Updated {site.siteMetadata.version} | Licensed under MIT</p>
+      <p>Last Updated {site.siteMetadata.version} | Licensed under DBAD</p>
     </Layout>
   );
 }
