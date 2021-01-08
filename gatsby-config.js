@@ -8,7 +8,6 @@ module.exports = {
     siteUrl: "https://schoolidforge.tk",
   },
   plugins: [
-    `gatsby-plugin-sass`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-robots-txt`,
@@ -25,5 +24,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
+    `gatsby-plugin-postcss`,
   ],
 };

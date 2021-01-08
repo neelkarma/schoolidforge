@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "gatsby";
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <section className="section">
-        <div className="container" id="root">
-          {children}
-        </div>
-      </section>
-      <nav
+      <main className="container px-5 lg:px-36 mt-5 m-auto lg:mt-10">
+        {children}
+      </main>
+      {/* <nav
         className="navbar is-fixed-bottom is-light"
         role="navigation"
         aria-label="main navigation"
@@ -67,7 +65,7 @@ export default function Layout({ children }) {
             <p className="navbar-item">Made by chickensalt</p>
           </div>
         </div>
-      </nav>
+      </nav> */}
     </>
   );
 }

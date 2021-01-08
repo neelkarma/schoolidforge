@@ -2,7 +2,6 @@ import React from "react";
 import { useStaticQuery, graphql } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import "../styles/style.scss";
 import logo from "../assets/logo-512.png";
 
 export default function About() {
@@ -20,12 +19,10 @@ export default function About() {
   return (
     <Layout>
       <SEO title="About | School IDForge" />
-      <figure className="image">
-        <img src={logo} style={{ height: "12rem" }} />
-      </figure>
-      <h1 className="title">School IDForge</h1>
-      <h3 className="subtitle" style={{ marginBottom: "0.35rem" }}>
-        Made with ❤️ by chickensalt
+      <img src={logo} className="h-48" />
+      <h1 className="text-5xl mb-3">School IDForge</h1>
+      <h3 className="text-3xl text-gray-500 mb-3">
+        Made with ❤️ by <span className="font-mono">chickensalt</span>
       </h3>
       <p>Last Updated {site.siteMetadata.version} | Licensed under DBAD</p>
     </Layout>

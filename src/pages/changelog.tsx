@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/style.scss";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import changelogData from "../../content/changelog.json";
@@ -8,40 +7,38 @@ export default function Changelog() {
   return (
     <Layout>
       <SEO title="Changelog | School IDForge" />
-      <h1 className="title is-2">
-        <small className="subtitle is-2">School IDForge </small>Changelog
+      <h1 className="text-4xl lg:text-5xl mb-5 font-mono font-bold">
+        School IDForge Changelog
       </h1>
-      <div className="content">
-        <hr />
-        {changelogData.map((block) => {
-          return (
-            <div>
-              <h2>{block.title}</h2>
-              <ul>
-                {block.changes.map((change, index) => {
-                  if (/^\+/.exec(change)) {
-                    return (
-                      <li key={index} className="has-text-success">
-                        {change.slice(2)}
-                      </li>
-                    );
-                  }
-                  if (/^-/.exec(change)) {
-                    return (
-                      <li key={index} className="has-text-danger">
-                        {change.slice(2)}
-                      </li>
-                    );
-                  } else {
-                    return <li key={index}>{change.slice(2)}</li>;
-                  }
-                })}
-              </ul>
-              <hr />
-            </div>
-          );
-        })}
-      </div>
+      <hr className="my-3" />
+      {changelogData.map((block) => {
+        return (
+          <div>
+            <h2 className="mb-3 text-3xl">{block.title}</h2>
+            <ul className="list-disc list-inside text-lg lg:list-outside">
+              {block.changes.map((change, index) => {
+                if (/^\+/.exec(change)) {
+                  return (
+                    <li key={index} className="text-green-600">
+                      {change.slice(2)}
+                    </li>
+                  );
+                }
+                if (/^-/.exec(change)) {
+                  return (
+                    <li key={index} className="text-red-600">
+                      {change.slice(2)}
+                    </li>
+                  );
+                } else {
+                  return <li key={index}>{change.slice(2)}</li>;
+                }
+              })}
+            </ul>
+            <hr className="my-3" />
+          </div>
+        );
+      })}
     </Layout>
   );
 }
