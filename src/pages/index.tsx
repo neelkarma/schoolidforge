@@ -117,19 +117,19 @@ export default class Home extends Component {
         </h1>
         <div className="flex">
           <input
-            className="font-mono border border-gray-300 shadow-inner flex-grow rounded-l-md p-3 lg:rounded-l-lg lg:text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="font-mono border border-gray-300 shadow-inner flex-grow rounded-l-md py-3 px-1 lg:px-3 lg:rounded-l-lg lg:text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             ref={this.idInput}
             placeholder="Student ID"
             onChange={this.forge}
           />
           <button
-            className="tracking-wide font-semibold flex-grow-0 p-3 rounded-none lg:text-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="tracking-wide font-semibold flex-shrink py-3 px-1 lg:px-3 rounded-none lg:text-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             onClick={this.toggleOptionsDiv}
           >
             Options
           </button>
           <button
-            className="tracking-wide font-semibold flex-grow-0 p-3 rounded-r-md lg:rounded-r-lg lg:text-md bg-green-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="tracking-wide font-semibold flex-shrink py-3 px-1 lg:px-3 rounded-r-md lg:rounded-r-lg lg:text-md bg-green-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
             ref={this.saveBtn}
             onClick={this.saveBarc}
           >

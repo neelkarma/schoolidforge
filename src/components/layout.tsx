@@ -68,7 +68,7 @@ function NavbarItem({
   const titleClasses = "hidden lg:inline";
   const iconElement = (
     <svg
-      className="w-8 h-8 lg:w-6 lg:h-6"
+      className="w-7 h-7 lg:w-6 lg:h-6"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
