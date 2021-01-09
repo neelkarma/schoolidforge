@@ -4,10 +4,10 @@
 
 ### Made with ❤️ by chickensalt
 
-_Licensed under MIT_
+_Licensed under DBAD_
 
 Acknowledgements:
 
 - [bwip-js](https://github.com/metafloor/bwip-js)
 - [Gatsby](https://www.gatsbyjs.com/)
-- [Bulma](https://bulma.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
