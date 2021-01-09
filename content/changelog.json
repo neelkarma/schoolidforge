@@ -1,6 +1,6 @@
 [
   {
-    "title": "09.01.21 Update",
+    "date": "09.01.21",
     "changes": [
       "+ Redesign with Tailwind CSS",
       "+ Stuff looks even better",
@@ -10,15 +10,15 @@
     ]
   },
   {
-    "title": "02.01.21 Update",
+    "date": "02.01.21",
     "changes": ["* Get forced to use new domain (thanks freenom)"]
   },
   {
-    "title": "08.12.20 Update",
+    "date": "08.12.20",
     "changes": ["+ Migrate to TypeScript", "* Minor Performance Improvements"]
   },
   {
-    "title": "07.11.20 Update",
+    "date": "07.11.20",
     "changes": [
       "+ Colour Coded Changelog",
       "* Improved Documentation",
@@ -27,7 +27,7 @@
     ]
   },
   {
-    "title": "25.10.20 Update",
+    "date": "25.10.20",
     "changes": [
       "+ Rewrite with Gatsby and Bulma",
       "+ Blazing Fast Speeds",
@@ -39,7 +39,7 @@
     ]
   },
   {
-    "title": "11.10.20 Update",
+    "date": "11.10.20",
     "changes": [
       "+ New Fonts (again)!",
       "+ Custom 404 Page",
@@ -51,7 +51,7 @@
     ]
   },
   {
-    "title": "08.10.20 Update",
+    "date": "08.10.20",
     "changes": [
       "+ New Fonts!",
       "* Major Code and Backend Optimizations",
@@ -60,7 +60,7 @@
     ]
   },
   {
-    "title": "05.10.20 Update",
+    "date": "05.10.20",
     "changes": [
       "+ Migrate to NPM for Dependencies",
       "+ Something",
@@ -72,7 +72,7 @@
     ]
   },
   {
-    "title": "02.10.20 Update",
+    "date": "02.10.20",
     "changes": [
       "+ Report a Bug Link",
       "+ About Page",

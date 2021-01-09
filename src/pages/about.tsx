@@ -1,21 +1,10 @@
 import React from "react";
-import { useStaticQuery, graphql } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import logo from "../assets/logo-512.png";
+import changelogData from "../../content/changelog.json";
 
 export default function About() {
-  const { site } = useStaticQuery(
-    graphql`
-      query About {
-        site {
-          siteMetadata {
-            version
-          }
-        }
-      }
-    `
-  );
   return (
     <Layout>
       <SEO title="About | School IDForge" />
@@ -27,7 +16,7 @@ export default function About() {
         Made with ❤️ by <span className="font-mono">chickensalt</span>
       </h3>
       <p className="text-gray-500">
-        Last Updated {site.siteMetadata.version} | Licensed under DBAD
+        Last Updated {changelogData[0].date} | Licensed under DBAD
       </p>
     </Layout>
   );
