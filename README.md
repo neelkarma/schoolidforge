@@ -64,4 +64,4 @@ See [ABOUT.md](./ABOUT.md)
 
 ## License
 
-School IDForge is licensed under [the DBAD license](./LICENSE.md).
+School IDForge is licensed under [the DBAD license](./LICENSE).
