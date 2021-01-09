@@ -14,7 +14,7 @@ export default function Changelog() {
       {changelogData.map((block) => {
         return (
           <div>
-            <h2 className="mb-3 text-3xl">{block.title}</h2>
+            <h2 className="mb-3 text-2xl lg:text-3xl">{block.title}</h2>
             <ul className="list-disc list-inside text-lg lg:list-outside">
               {block.changes.map((change, index) => {
                 if (/^\+/.exec(change)) {

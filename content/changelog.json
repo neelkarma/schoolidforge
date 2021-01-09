@@ -1,5 +1,15 @@
 [
   {
+    "title": "09.01.21 Update",
+    "changes": [
+      "+ Redesign with Tailwind CSS",
+      "+ Stuff looks even better",
+      "+ Slick Icons (courtesy of HeroIcons)",
+      "+ Major Performance Improvements",
+      "- Remove Barcode Quality option because who uses it anyways"
+    ]
+  },
+  {
     "title": "02.01.21 Update",
     "changes": ["* Get forced to use new domain (thanks freenom)"]
   },

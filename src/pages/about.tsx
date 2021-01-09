@@ -20,11 +20,15 @@ export default function About() {
     <Layout>
       <SEO title="About | School IDForge" />
       <img src={logo} className="h-48" />
-      <h1 className="text-5xl mb-3">School IDForge</h1>
-      <h3 className="text-3xl text-gray-500 mb-3">
+      <h1 className="text-4xl mb-3 font-mono font-bold lg:text-5xl">
+        School IDForge
+      </h1>
+      <h3 className="text-2xl text-gray-600 mb-3 lg:text-3xl">
         Made with ❤️ by <span className="font-mono">chickensalt</span>
       </h3>
-      <p>Last Updated {site.siteMetadata.version} | Licensed under DBAD</p>
+      <p className="text-gray-500">
+        Last Updated {site.siteMetadata.version} | Licensed under DBAD
+      </p>
     </Layout>
   );
 }

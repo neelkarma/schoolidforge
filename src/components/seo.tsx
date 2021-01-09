@@ -1,10 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
 import logo from "../assets/logo-512.png";
 
-function SEO({ title }) {
+export default function SEO({ title }: { title: string }) {
   const { site } = useStaticQuery(
     graphql`
       query SEO {
@@ -35,13 +34,3 @@ function SEO({ title }) {
     </Helmet>
   );
 }
-
-SEO.propTypes = {
-  title: PropTypes.string,
-};
-
-SEO.defaultProps = {
-  title: null,
-};
-
-export default SEO;
