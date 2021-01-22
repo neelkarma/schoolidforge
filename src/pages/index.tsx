@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { PageProps } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import bwipjs from "bwip-js";
@@ -12,7 +13,7 @@ export default class Home extends Component {
   barcHeightInput: React.RefObject<HTMLInputElement>;
   includeTextCheckbox: React.RefObject<HTMLInputElement>;
   saveBtn: React.RefObject<HTMLButtonElement>;
-  constructor(props) {
+  constructor(props: PageProps) {
     super(props);
 
     this.optionsDiv = React.createRef();
@@ -31,19 +32,19 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.saveBtn.current.disabled = true;
-    this.barcCanvas.current.style.width = "150px";
-    this.barcWidthInput.current.value = "150";
-    this.barcHeightInput.current.value = "20";
-    this.includeTextCheckbox.current.checked = true;
+    this.saveBtn.current!.disabled = true;
+    this.barcCanvas.current!.style.width = "150px";
+    this.barcWidthInput.current!.value = "150";
+    this.barcHeightInput.current!.value = "20";
+    this.includeTextCheckbox.current!.checked = true;
   }
 
   saveBarc() {
-    this.barcCanvas.current.toBlob((blob) => {
+    this.barcCanvas.current!.toBlob((blob) => {
       const blobUrl = URL.createObjectURL(blob);
       const blobAnchor = document.createElement("a");
       blobAnchor.href = blobUrl;
-      blobAnchor.download = `${this.idInput.current.value.trim()}-barcode`;
+      blobAnchor.download = `${this.idInput.current!.value.trim()}-barcode`;
       blobAnchor.click();
       setTimeout(() => {
         blobAnchor.remove();
@@ -53,58 +54,58 @@ export default class Home extends Component {
   }
 
   handleBarcWidthChange() {
-    this.barcCanvas.current.style.width =
-      this.barcWidthInput.current.value + "px";
+    this.barcCanvas.current!.style.width =
+      this.barcWidthInput.current!.value + "px";
   }
 
   toggleOptionsDiv() {
-    if (this.optionsDiv.current.classList.contains("block")) {
-      this.optionsDiv.current.classList.remove("block");
-      this.optionsDiv.current.classList.add("hidden");
+    if (this.optionsDiv.current!.classList.contains("block")) {
+      this.optionsDiv.current!.classList.remove("block");
+      this.optionsDiv.current!.classList.add("hidden");
     } else {
-      this.optionsDiv.current.classList.remove("hidden");
-      this.optionsDiv.current.classList.add("block");
+      this.optionsDiv.current!.classList.remove("hidden");
+      this.optionsDiv.current!.classList.add("block");
     }
   }
 
   forge() {
-    this.saveBtn.current.classList.remove("hover:bg-green-500");
-    this.saveBtn.current.disabled = true;
-    this.barcCanvas.current.classList.add("hidden");
-    this.outputDiv.current.innerHTML = null;
-    this.outputDiv.current.classList.remove("block");
-    this.outputDiv.current.classList.add("hidden");
-    if (isNaN(this.idInput.current.value.trim() as any)) {
-      this.outputDiv.current.innerHTML = `"${this.idInput.current.value.trim()}" is not a valid Student ID!`;
-      this.outputDiv.current.classList.add("block");
-      this.outputDiv.current.classList.remove("hidden");
+    this.saveBtn.current!.classList.remove("hover:bg-green-500");
+    this.saveBtn.current!.disabled = true;
+    this.barcCanvas.current!.classList.add("hidden");
+    this.outputDiv.current!.innerHTML = "";
+    this.outputDiv.current!.classList.remove("block");
+    this.outputDiv.current!.classList.add("hidden");
+    if (isNaN(this.idInput.current!.value.trim() as any)) {
+      this.outputDiv.current!.innerHTML = `"${this.idInput.current!.value.trim()}" is not a valid Student ID!`;
+      this.outputDiv.current!.classList.add("block");
+      this.outputDiv.current!.classList.remove("hidden");
       return;
     }
-    if (this.idInput.current.value.trim().length < 9) {
+    if (this.idInput.current!.value.trim().length < 9) {
       return;
     }
-    if (this.idInput.current.value.trim().length > 9) {
-      this.outputDiv.current.innerHTML = `"${this.idInput.current.value.trim()}" is not a valid Student ID!`;
-      this.outputDiv.current.classList.add("block");
-      this.outputDiv.current.classList.remove("hidden");
+    if (this.idInput.current!.value.trim().length > 9) {
+      this.outputDiv.current!.innerHTML = `"${this.idInput.current!.value.trim()}" is not a valid Student ID!`;
+      this.outputDiv.current!.classList.add("block");
+      this.outputDiv.current!.classList.remove("hidden");
       return;
     }
     try {
-      bwipjs.toCanvas(this.barcCanvas.current, {
+      bwipjs.toCanvas(this.barcCanvas.current!, {
         bcid: "code128",
-        text: this.idInput.current.value.trim(),
+        text: this.idInput.current!.value.trim(),
         scale: 10,
-        height: parseInt(this.barcHeightInput.current.value),
-        includetext: this.includeTextCheckbox.current.checked,
+        height: parseInt(this.barcHeightInput.current!.value),
+        includetext: this.includeTextCheckbox.current!.checked,
         textxalign: "center",
       });
-      this.barcCanvas.current.classList.remove("hidden");
-      this.saveBtn.current.disabled = false;
-      this.saveBtn.current.classList.add("hover:bg-green-500");
+      this.barcCanvas.current!.classList.remove("hidden");
+      this.saveBtn.current!.disabled = false;
+      this.saveBtn.current!.classList.add("hover:bg-green-500");
     } catch (error) {
-      this.outputDiv.current.innerHTML = "Error: " + error;
-      this.outputDiv.current.classList.add("block");
-      this.outputDiv.current.classList.remove("hidden");
+      this.outputDiv.current!.innerHTML = "Error: " + error;
+      this.outputDiv.current!.classList.add("block");
+      this.outputDiv.current!.classList.remove("hidden");
     }
   }
 
