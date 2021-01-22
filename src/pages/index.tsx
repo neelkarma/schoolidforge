@@ -75,7 +75,7 @@ export default class Home extends Component {
     this.outputDiv.current!.innerHTML = "";
     this.outputDiv.current!.classList.remove("block");
     this.outputDiv.current!.classList.add("hidden");
-    if (isNaN(this.idInput.current!.value.trim() as any)) {
+    if (isNaN(Number(this.idInput.current!.value.trim()))) {
       this.outputDiv.current!.innerHTML = `"${this.idInput.current!.value.trim()}" is not a valid Student ID!`;
       this.outputDiv.current!.classList.add("block");
       this.outputDiv.current!.classList.remove("hidden");
