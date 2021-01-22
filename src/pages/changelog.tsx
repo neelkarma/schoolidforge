@@ -11,8 +11,8 @@ export default function Changelog() {
         School IDForge Changelog
       </h1>
       <hr className="my-3" />
-      {changelogData.map((block) => {
-        return (
+      {changelogData.map(
+        (block: { date: string; changes: string[] }, index) => (
           <div>
             <h2 className="mb-3 text-2xl lg:text-3xl">{block.date} Update</h2>
             <ul className="list-disc list-inside text-lg lg:list-outside">
@@ -37,8 +37,8 @@ export default function Changelog() {
             </ul>
             <hr className="my-3" />
           </div>
-        );
-      })}
+        )
+      )}
     </Layout>
   );
 }
