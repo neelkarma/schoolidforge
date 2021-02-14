@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
 import logo from "../assets/logo-512.png";
 
-export default function SEO({ title }: { title: string }) {
+const SEO: React.FC<{ title: string }> = ({ title }) => {
   const { site } = useStaticQuery(
     graphql`
       query SEO {
@@ -33,4 +33,6 @@ export default function SEO({ title }: { title: string }) {
       <meta name="twitter:description" content={description} />
     </Helmet>
   );
-}
+};
+
+export default SEO;

@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "gatsby";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const Layout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <div className="flex flex-col h-screen">
       <main className="container px-5 lg:px-36 mt-5 m-auto lg:mt-10">
@@ -50,19 +52,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </footer>
     </div>
   );
-}
+};
 
-function NavbarItem({
-  title,
-  icon,
-  variant,
-  to,
-}: {
+const NavbarItem: React.FC<{
   title: string;
   icon: string;
   variant: "internal" | "external";
   to: string;
-}) {
+}> = ({ title, icon, variant, to }) => {
   const linkClasses =
     "inline-flex space-x-1.5 h-full items-center px-3 hover:bg-gray-300";
   const titleClasses = "hidden lg:inline";
@@ -96,4 +93,6 @@ function NavbarItem({
         </a>
       );
   }
-}
+};
+
+export default Layout;

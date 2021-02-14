@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { Link } from "gatsby";
 
-export default function FourOhFour() {
+const FourOhFour: React.FC = () => {
   return (
     <Layout>
       <SEO title="404 | School IDForge" />
@@ -21,4 +21,6 @@ export default function FourOhFour() {
       </Link>
     </Layout>
   );
-}
+};
+
+export default FourOhFour;

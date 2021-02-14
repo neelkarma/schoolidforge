@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 import SEO from "../components/seo";
 import changelogData from "../../content/changelog.json";
 
-export default function Changelog() {
+const Changelog: React.FC = () => {
   return (
     <Layout>
       <SEO title="Changelog | School IDForge" />
@@ -11,34 +11,34 @@ export default function Changelog() {
         School IDForge Changelog
       </h1>
       <hr className="my-3" />
-      {changelogData.map(
-        (block: { date: string; changes: string[] }, index) => (
-          <div>
-            <h2 className="mb-3 text-2xl lg:text-3xl">{block.date} Update</h2>
-            <ul className="list-disc list-inside text-lg lg:list-outside">
-              {block.changes.map((change, index) => {
-                if (/^\+/.exec(change)) {
-                  return (
-                    <li key={index} className="text-green-600">
-                      {change.slice(2)}
-                    </li>
-                  );
-                }
-                if (/^-/.exec(change)) {
-                  return (
-                    <li key={index} className="text-red-600">
-                      {change.slice(2)}
-                    </li>
-                  );
-                } else {
-                  return <li key={index}>{change.slice(2)}</li>;
-                }
-              })}
-            </ul>
-            <hr className="my-3" />
-          </div>
-        )
-      )}
+      {changelogData.map((block: { date: string; changes: string[] }) => (
+        <div>
+          <h2 className="mb-3 text-2xl lg:text-3xl">{block.date} Update</h2>
+          <ul className="list-disc list-inside text-lg lg:list-outside">
+            {block.changes.map((change, index) => {
+              if (/^\+/.exec(change)) {
+                return (
+                  <li key={index} className="text-green-600">
+                    {change.slice(2)}
+                  </li>
+                );
+              }
+              if (/^-/.exec(change)) {
+                return (
+                  <li key={index} className="text-red-600">
+                    {change.slice(2)}
+                  </li>
+                );
+              } else {
+                return <li key={index}>{change.slice(2)}</li>;
+              }
+            })}
+          </ul>
+          <hr className="my-3" />
+        </div>
+      ))}
     </Layout>
   );
-}
+};
+
+export default Changelog;

@@ -4,7 +4,7 @@ import SEO from "../components/seo";
 import logo from "../assets/logo-512.png";
 import changelogData from "../../content/changelog.json";
 
-export default function About() {
+const About: React.FC = () => {
   return (
     <Layout>
       <SEO title="About | School IDForge" />
@@ -20,4 +20,6 @@ export default function About() {
       </p>
     </Layout>
   );
-}
+};
+
+export default About;
