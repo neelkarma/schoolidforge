@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "gatsby";
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="flex flex-col h-screen">
       <main className="container px-5 lg:px-36 mt-5 m-auto lg:mt-10">
