@@ -1,5 +1,5 @@
-module.exports = {
-  parser: `@typescript-eslint/parser`,
+{
+  parser: "@typescript-eslint/parser",
   extends: [
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
@@ -18,4 +18,4 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
   }
-};
+}
