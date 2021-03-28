@@ -16,7 +16,7 @@ const About: React.FC = () => {
         Made with ❤️ by <span className="font-mono">chickensalt</span>
       </h3>
       <p className="text-gray-500">
-        Last Updated {changelogData[0].date} | Licensed under DBAD
+        Version {changelogData[0].version} | Licensed under DBAD
       </p>
     </Layout>
   );

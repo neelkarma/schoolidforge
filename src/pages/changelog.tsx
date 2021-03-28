@@ -11,9 +11,9 @@ const Changelog: React.FC = () => {
         School IDForge Changelog
       </h1>
       <hr className="my-3" />
-      {changelogData.map((block: { date: string; changes: string[] }) => (
+      {changelogData.map((block: { version: string; changes: string[] }) => (
         <div>
-          <h2 className="mb-3 text-2xl lg:text-3xl">{block.date} Update</h2>
+          <h2 className="mb-3 text-2xl lg:text-3xl">Version {block.version}</h2>
           <ul className="list-disc list-inside text-lg lg:list-outside">
             {block.changes.map((change, index) => {
               if (/^\+/.exec(change)) {
