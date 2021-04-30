@@ -1,7 +1,9 @@
 import React, { useRef, useCallback, useEffect } from "react";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import bwipjs from "bwip-js";
+// @types/bwip-js hasn't been updated to support v3.0.0 yet
+//@ts-ignore
+import { code128 } from "bwip-js";
 
 const Home: React.FC = () => {
   const optionsDiv = useRef<HTMLDivElement>(null);
@@ -72,8 +74,7 @@ const Home: React.FC = () => {
       return;
     }
     try {
-      bwipjs.toCanvas(barcCanvas.current!, {
-        bcid: "code128",
+      code128(barcCanvas.current!, {
         text: idInput.current!.value.trim(),
         scale: 10,
         height: parseInt(barcHeightInput.current!.value),
