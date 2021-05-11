@@ -26,7 +26,7 @@ import {
   Center,
   VStack,
   HStack,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import {
   IoTextOutline,
@@ -37,7 +37,7 @@ import {
   IoInformationCircleOutline,
   IoSunnyOutline,
   IoMoonOutline,
-  IoChevronUpOutline
+  IoChevronUpOutline,
 } from "react-icons/io5";
 
 const NavItem: React.FC<{
@@ -49,11 +49,23 @@ const NavItem: React.FC<{
   <Tooltip placement="top" label={label} aria-label="navigation item tooltip">
     {variant == "internal" ? (
       <Link as={GatsbyLink} to={to} _hover={undefined}>
-        <IconButton icon={icon} variant="ghost" aria-label={label} size="lg" fontSize="25px"/>
+        <IconButton
+          icon={icon}
+          variant="ghost"
+          aria-label={label}
+          size="lg"
+          fontSize="25px"
+        />
       </Link>
     ) : (
       <Link href={to} _hover={undefined}>
-        <IconButton icon={icon} variant="ghost" aria-label={label} size="lg" fontSize="25px" />
+        <IconButton
+          icon={icon}
+          variant="ghost"
+          aria-label={label}
+          size="lg"
+          fontSize="25px"
+        />
       </Link>
     )}
   </Tooltip>
@@ -127,7 +139,10 @@ const IDInput: React.FC<{
     <InputGroup size="lg" variant="filled">
       <Input onChange={handleIDChange} placeholder="Student ID" />
       <InputRightElement>
-        <Tooltip label="Include Student ID in Barcode" aria-label="enable text tooltip">
+        <Tooltip
+          label="Include Student ID in Barcode"
+          aria-label="enable text tooltip"
+        >
           <IconButton
             aria-label="Enable Text"
             variant={text ? "solid" : "ghost"}
@@ -166,7 +181,10 @@ const BarcCanvas: React.FC<{
 }> = ({ studentID, includeText, barcSize, setError }) => {
   const [visible, setVisible] = useState(false);
   const barcCanvas = useRef<HTMLCanvasElement>(null);
-  const saveHint = useBreakpointValue({ base: "Tap to Save!", md: "Click to Save!" });
+  const saveHint = useBreakpointValue({
+    base: "Tap to Save!",
+    md: "Click to Save!",
+  });
 
   const handleError = (message?: string) => {
     setVisible(false);
@@ -194,7 +212,7 @@ const BarcCanvas: React.FC<{
         includetext: includeText,
         textxalign: "center",
         backgroundcolor: "ffffff",
-        padding: 5
+        padding: 5,
       });
       setError();
       setVisible(true);
@@ -225,10 +243,7 @@ const BarcCanvas: React.FC<{
 
   return (
     <Collapse in={visible} animateOpacity>
-      <Box
-        m={2}
-        _hover={{ cursor: "pointer" }}
-      >
+      <Box m={2} _hover={{ cursor: "pointer" }}>
         <canvas
           ref={barcCanvas}
           style={{ width: `${barcSize}px` }}
@@ -237,7 +252,7 @@ const BarcCanvas: React.FC<{
       </Box>
       <Center>
         <VStack spacing={0}>
-          <Icon as={IoChevronUpOutline} w={8} h={8} color="gray.500"/>
+          <Icon as={IoChevronUpOutline} w={8} h={8} color="gray.500" />
           <Text color="gray.500">{saveHint}</Text>
         </VStack>
       </Center>

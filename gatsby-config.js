@@ -26,6 +26,6 @@ module.exports = {
     `@chakra-ui/gatsby-plugin`,
   ],
   flags: {
-    DEV_SSR: false
-  }
+    DEV_SSR: false,
+  },
 };
