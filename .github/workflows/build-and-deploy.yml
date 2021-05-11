@@ -10,10 +10,10 @@ jobs:
           persist-credentials: false
 
       - name: Install Dependencies
-        run: npm i
+        run: yarn install
 
       - name: Build
-        run: npm run build
+        run: yarn build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
