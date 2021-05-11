@@ -1,4 +1,4 @@
-![School IDForge Logo](./src/assets/logo-512.png)
+![School IDForge Logo](./src/assets/logo-cropped.png)
 
 # School IDForge
 
