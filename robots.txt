@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://schoolidforge.ml/sitemap.xml
+Sitemap: https://schoolidforge.ml/sitemap/sitemap-index.xml
 Host: https://schoolidforge.ml
