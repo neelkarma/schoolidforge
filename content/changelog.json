@@ -1,5 +1,15 @@
 [
   {
+    "version": "3.0.0",
+    "changes": [
+      "+ Rewrite Design in Chakra UI",
+      "+ Update bwip-js to v3",
+      "+ Major bundle size reduction",
+      "+ Things should be faster",
+      "* Update all dependencies"
+    ]
+  },
+  {
     "version": "2.1.0",
     "changes": [
       "+ Update Gatsby to v3 (better performance!)",
