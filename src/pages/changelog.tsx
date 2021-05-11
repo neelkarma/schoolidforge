@@ -1,43 +1,43 @@
 import React from "react";
-import Layout from "../components/layout";
+import { Heading, Divider, UnorderedList, ListItem, Container } from "@chakra-ui/react";
+import BackLink from "../components/backlink";
 import SEO from "../components/seo";
 import changelogData from "../../content/changelog.json";
 
 const Changelog: React.FC = () => {
   return (
-    <Layout>
+    <Container maxW={{ base: "90%", lg: "80%" }} py="5px">
       <SEO title="Changelog | School IDForge" />
-      <h1 className="text-4xl lg:text-5xl mb-5 font-mono font-bold">
-        School IDForge Changelog
-      </h1>
-      <hr className="my-3" />
+      <BackLink />
+      <Heading size="3xl" my={6}>School IDForge Changelog</Heading>
+      <Divider />
       {changelogData.map((block: { version: string; changes: string[] }) => (
-        <div>
-          <h2 className="mb-3 text-2xl lg:text-3xl">Version {block.version}</h2>
-          <ul className="list-disc list-inside text-lg lg:list-outside">
+        <>
+          <Heading size="xl" mt={3} mb={2}>Version {block.version}</Heading>
+          <UnorderedList mb={3}>
             {block.changes.map((change, index) => {
-              if (/^\+/.exec(change)) {
+              if (change.startsWith("+")) {
                 return (
-                  <li key={index} className="text-green-600">
+                  <ListItem key={index} color="green.600">
                     {change.slice(2)}
-                  </li>
+                  </ListItem>
                 );
               }
-              if (/^-/.exec(change)) {
+              if (change.startsWith("-")) {
                 return (
-                  <li key={index} className="text-red-600">
+                  <ListItem key={index} color="red.600">
                     {change.slice(2)}
-                  </li>
+                  </ListItem>
                 );
               } else {
-                return <li key={index}>{change.slice(2)}</li>;
+                return <ListItem key={index}>{change.slice(2)}</ListItem>;
               }
             })}
-          </ul>
-          <hr className="my-3" />
-        </div>
+          </UnorderedList>
+          <Divider />
+        </>
       ))}
-    </Layout>
+    </Container>
   );
 };
 

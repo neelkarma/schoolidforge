@@ -23,6 +23,9 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
-    `gatsby-plugin-postcss`,
+    `@chakra-ui/gatsby-plugin`,
   ],
+  flags: {
+    DEV_SSR: false
+  }
 };

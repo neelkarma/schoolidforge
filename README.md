@@ -11,42 +11,32 @@ School IDForge is a simple tool that generates an ID Card Barcode from a Student
 
 ### Quick Start
 
-1. Go to [School IDForge](https://schoolidforge.tk/).
-2. Type in the desired Student ID in the field at top of the screen.
+1. Go to [School IDForge](https://schoolidforge.ml/).
+2. Type in the desired Student ID in the field in the middle of the screen.
 3. Profit.
 
-From here you can either print it out and scan it (recommended) or you can scan the barcode directly from your phone.
+From here you can either scan the barcode directly from your phone or print it out and scan it.
 
-### Printing the Barcode (Recommended)
+### Scanning Directly from a Phone (Works for only the new scanners, really quick)
 
-1. Follow the steps in the [Quick Start](#quick-start) (preferably on a computer with access to a printer).
-2. Save the barcode using the "Save" button in the top-right of the screen.
-3. Open Microsoft Word or Google Docs and create a new document.
-4. Make sure the page colour is white.
-5. Enable the ruler and make sure the units are in mm or cm.
-6. Insert the barcode you generated earlier.
-7. Using the ruler, scale the image so that it is 30mm long. **Do not skew or distort the image!**
-8. Print and cut it out.
-9. Profit even more.
-
-### Scanning Directly from a Phone
-
-_Note: This method is not recommended as it may or may not work depending on the type of the barcode scanner used._
+_Note: This method only works for the NEW SCANNERS (that were introduced at the beginning of term 2 2021). It WILL NOT work for any of the other scanners. This is because the old scanners depend on the reflectivity of the barcode, which is something a phone cannot provide, while the new scanners use 2D imaging that makes scanning from a phone possible._
 
 1. Follow the steps in the [Quick Start](#quick-start) **on a phone**.
 2. Make sure your phone's brightness is set to max.
-3. Open the "Options" menu and adjust the "Barcode Size" until it fits the size of the scanner.
-4. Scan the barcode.
+3. Adjust the barcode size using the slider.
+4. Scan the barcode (sometimes it takes a few tries).
 5. Profit even more.
 
-### Options Explained
+### Printing the Barcode (Works for all scanners, takes time)
 
-| Name                | Function                                                        | Input Type  |
-| ------------------- | --------------------------------------------------------------- | ----------- |
-| **Barcode Size**    | Adjust size of barcode on screen                                | Pixels      |
-| **Barcode Height**  | Adjust height of barcode generated                              | Millimeters |
-| **Barcode Quality** | Adjust Quality of Barcode                                       | Number      |
-| **Include Text?**   | Whether to include text of the Student ID in the barcode or not | Yes/No      |
+1. Follow the steps in the [Quick Start](#quick-start) (preferably on a computer with access to a printer).
+2. Save the barcode by clicking on the barcode.
+3. Open Microsoft Word or Google Docs and create a new document.
+4. Enable the ruler and make sure the units are in mm or cm.
+5. Insert the barcode you generated earlier.
+6. Using the ruler tool, scale the image so that it is 30mm long. **Do not skew or distort the image!**
+7. Print and scan. Make sure there is something (you can use your hand) behind the barcode so that light doesn't shine through the paper.
+8. Profit even more.
 
 ## Want to Help?
 
@@ -61,6 +51,12 @@ See [DEVELOPERS.md](./DEVELOPERS.md).
 ## About
 
 See [ABOUT.md](./ABOUT.md)
+
+## FAQ
+
+### Why did you call it School IDForge? It sounds super lame.
+
+I initially called it that because... I forgot. I would change it to something better if I didn't have to change the website address, which is a massive pain in the ass.
 
 ## License
 

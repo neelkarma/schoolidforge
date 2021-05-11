@@ -1,168 +1,284 @@
-import React, { useRef, useCallback, useEffect } from "react";
-import Layout from "../components/layout";
+import React, { useEffect, useRef, useState } from "react";
 import SEO from "../components/seo";
-// @types/bwip-js hasn't been updated to support v3.0.0 yet
+import { Link as GatsbyLink } from "gatsby";
+// @types/bwip-js doesn't support v3 yet
 //@ts-ignore
 import { code128 } from "bwip-js";
+import {
+  useColorMode,
+  useBreakpointValue,
+  Box,
+  Icon,
+  InputGroup,
+  Input,
+  InputRightElement,
+  IconButton,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Link,
+  Tooltip,
+  Alert,
+  AlertIcon,
+  Collapse,
+  Grid,
+  Center,
+  VStack,
+  HStack,
+  Text
+} from "@chakra-ui/react";
+import {
+  IoTextOutline,
+  IoHelpCircleOutline,
+  IoBugOutline,
+  IoTimeOutline,
+  IoLogoGithub,
+  IoInformationCircleOutline,
+  IoSunnyOutline,
+  IoMoonOutline,
+  IoChevronUpOutline
+} from "react-icons/io5";
 
-const Home: React.FC = () => {
-  const optionsDiv = useRef<HTMLDivElement>(null);
-  const outputDiv = useRef<HTMLDivElement>(null);
-  const idInput = useRef<HTMLInputElement>(null);
+const NavItem: React.FC<{
+  icon: JSX.Element;
+  label: string;
+  variant: "internal" | "external";
+  to: string;
+}> = ({ icon, label, variant, to }) => (
+  <Tooltip placement="top" label={label} aria-label="navigation item tooltip">
+    {variant == "internal" ? (
+      <Link as={GatsbyLink} to={to} _hover={undefined}>
+        <IconButton icon={icon} variant="ghost" aria-label={label} size="lg" fontSize="25px"/>
+      </Link>
+    ) : (
+      <Link href={to} _hover={undefined}>
+        <IconButton icon={icon} variant="ghost" aria-label={label} size="lg" fontSize="25px" />
+      </Link>
+    )}
+  </Tooltip>
+);
+
+const Nav: React.FC<{}> = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
+  return (
+    <HStack spacing={5}>
+      <NavItem
+        icon={<IoHelpCircleOutline />}
+        label="Help"
+        variant="external"
+        to="https://github.com/neelkarma/schoolidforge#usage"
+      />
+      <NavItem
+        icon={<IoBugOutline />}
+        label="Report a Bug"
+        variant="external"
+        to="https://github.com/neelkarma/schoolidforge/blob/master/CONTRIBUTING.md"
+      />
+      <NavItem
+        icon={<IoInformationCircleOutline />}
+        label="About"
+        variant="internal"
+        to="/about"
+      />
+      <NavItem
+        icon={<IoTimeOutline />}
+        label="Changelog"
+        variant="internal"
+        to="/changelog"
+      />
+      <NavItem
+        icon={<IoLogoGithub />}
+        label="Source"
+        variant="external"
+        to="https://github.com/neelkarma/schoolidforge"
+      />
+      <Tooltip
+        placement="top"
+        label={colorMode == "light" ? "Dark Mode" : "Light Mode"}
+        aria-label="color mode toggle"
+      >
+        <IconButton
+          variant="ghost"
+          aria-label="color mode toggle"
+          icon={colorMode == "light" ? <IoMoonOutline /> : <IoSunnyOutline />}
+          onClick={toggleColorMode}
+          size="lg"
+          fontSize="25px"
+        />
+      </Tooltip>
+    </HStack>
+  );
+};
+
+const IDInput: React.FC<{
+  onIDChange: (id: string) => any;
+  onTextClick: (text: boolean) => any;
+}> = ({ onIDChange, onTextClick }) => {
+  const [text, setText] = useState(false);
+  const handleIDChange: React.ChangeEventHandler<HTMLInputElement> = (event) =>
+    onIDChange(event.target.value);
+  const handleTextClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+    setText(!text);
+    onTextClick(!text);
+  };
+
+  return (
+    <InputGroup size="lg" variant="filled">
+      <Input onChange={handleIDChange} placeholder="Student ID" />
+      <InputRightElement>
+        <Tooltip label="Include Student ID in Barcode" aria-label="enable text tooltip">
+          <IconButton
+            aria-label="Enable Text"
+            variant={text ? "solid" : "ghost"}
+            colorScheme="blue"
+            onClick={handleTextClick}
+            icon={<IoTextOutline />}
+            fontSize="20px"
+          />
+        </Tooltip>
+      </InputRightElement>
+    </InputGroup>
+  );
+};
+
+const BarcSizeInput: React.FC<{
+  onChange: (value: number) => any;
+}> = ({ onChange }) => (
+  <Slider
+    defaultValue={window.innerWidth / 2}
+    min={100}
+    max={window.innerWidth}
+    onChange={onChange}
+  >
+    <SliderTrack>
+      <SliderFilledTrack />
+    </SliderTrack>
+    <SliderThumb boxSize={6} />
+  </Slider>
+);
+
+const BarcCanvas: React.FC<{
+  studentID: string;
+  includeText: boolean;
+  barcSize: number;
+  setError: (message?: string) => any;
+}> = ({ studentID, includeText, barcSize, setError }) => {
+  const [visible, setVisible] = useState(false);
   const barcCanvas = useRef<HTMLCanvasElement>(null);
-  const barcWidthInput = useRef<HTMLInputElement>(null);
-  const barcHeightInput = useRef<HTMLInputElement>(null);
-  const includeTextCheckbox = useRef<HTMLInputElement>(null);
-  const saveBtn = useRef<HTMLButtonElement>(null);
+  const saveHint = useBreakpointValue({ base: "Tap to Save!", md: "Click to Save!" });
 
-  useEffect(() => {
-    saveBtn.current!.disabled = true;
-    barcCanvas.current!.style.width = "150px";
-    barcWidthInput.current!.value = "150";
-    barcHeightInput.current!.value = "20";
-    includeTextCheckbox.current!.checked = true;
-  }, []);
+  const handleError = (message?: string) => {
+    setVisible(false);
+    setError(message);
+  };
 
-  const saveBarc = useCallback(() => {
-    barcCanvas.current!.toBlob((blob) => {
+  const validateID = (): { valid: boolean; message?: string } => {
+    if (studentID.trim().length < 9) return { valid: false };
+    if (isNaN(Number(studentID.trim())) || studentID.trim().length > 9)
+      return {
+        valid: false,
+        message: `${studentID.trim()} is not a valid student ID!`,
+      };
+    return { valid: true };
+  };
+
+  const forge = () => {
+    const { valid, message } = validateID();
+    if (!valid) return handleError(message);
+    try {
+      code128(barcCanvas.current!, {
+        text: studentID,
+        scale: 10,
+        height: 20,
+        includetext: includeText,
+        textxalign: "center",
+        backgroundcolor: "ffffff",
+        padding: 5
+      });
+      setError();
+      setVisible(true);
+    } catch (e) {
+      handleError(e);
+    }
+  };
+
+  const handleCanvasClick: React.MouseEventHandler<HTMLCanvasElement> = (
+    event
+  ) => {
+    if (!visible) return;
+    // Not using type casting creates a type error, not sure why
+    (event.target as HTMLCanvasElement).toBlob((blob) => {
       const blobUrl = URL.createObjectURL(blob);
       const blobAnchor = document.createElement("a");
       blobAnchor.href = blobUrl;
-      blobAnchor.download = `${idInput.current!.value.trim()}-barcode`;
+      blobAnchor.download = `${studentID!.trim()}-barcode`;
       blobAnchor.click();
       setTimeout(() => {
         blobAnchor.remove();
         window.URL.revokeObjectURL(blobUrl);
       }, 0);
     });
-  }, []);
+  };
 
-  const handleBarcWidthChange = useCallback(() => {
-    barcCanvas.current!.style.width = barcWidthInput.current!.value + "px";
-  }, []);
-
-  const toggleOptionsDiv = useCallback(() => {
-    if (optionsDiv.current!.classList.contains("block")) {
-      optionsDiv.current!.classList.remove("block");
-      optionsDiv.current!.classList.add("hidden");
-    } else {
-      optionsDiv.current!.classList.remove("hidden");
-      optionsDiv.current!.classList.add("block");
-    }
-  }, []);
-
-  const forge = useCallback(() => {
-    saveBtn.current!.classList.remove("hover:bg-green-500");
-    saveBtn.current!.disabled = true;
-    barcCanvas.current!.classList.add("hidden");
-    outputDiv.current!.innerHTML = "";
-    outputDiv.current!.classList.remove("block");
-    outputDiv.current!.classList.add("hidden");
-    if (isNaN(Number(idInput.current!.value.trim()))) {
-      outputDiv.current!.innerHTML = `"${idInput.current!.value.trim()}" is not a valid Student ID!`;
-      outputDiv.current!.classList.add("block");
-      outputDiv.current!.classList.remove("hidden");
-      return;
-    }
-    if (idInput.current!.value.trim().length < 9) {
-      return;
-    }
-    if (idInput.current!.value.trim().length > 9) {
-      outputDiv.current!.innerHTML = `"${idInput.current!.value.trim()}" is not a valid Student ID!`;
-      outputDiv.current!.classList.add("block");
-      outputDiv.current!.classList.remove("hidden");
-      return;
-    }
-    try {
-      code128(barcCanvas.current!, {
-        text: idInput.current!.value.trim(),
-        scale: 10,
-        height: parseInt(barcHeightInput.current!.value),
-        includetext: includeTextCheckbox.current!.checked,
-        textxalign: "center",
-      });
-      barcCanvas.current!.classList.remove("hidden");
-      saveBtn.current!.disabled = false;
-      saveBtn.current!.classList.add("hover:bg-green-500");
-    } catch (error) {
-      outputDiv.current!.innerHTML = "Error: " + error;
-      outputDiv.current!.classList.add("block");
-      outputDiv.current!.classList.remove("hidden");
-    }
-  }, []);
+  useEffect(forge, [studentID, includeText]);
 
   return (
-    <Layout>
-      <SEO title="School IDForge" />
-      <h1 className="text-4xl lg:text-5xl mb-5 font-mono font-bold">
-        School IDForge
-      </h1>
-      <div className="flex">
-        <input
-          className="font-mono border border-gray-300 shadow-inner flex-grow rounded-l-md py-3 px-1 lg:px-3 lg:rounded-l-lg lg:text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          ref={idInput}
-          placeholder="Student ID"
-          onChange={forge}
-        />
-        <button
-          className="tracking-wide font-semibold flex-shrink py-3 px-1 lg:px-3 rounded-none lg:text-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          onClick={toggleOptionsDiv}
-        >
-          Options
-        </button>
-        <button
-          className="tracking-wide font-semibold flex-shrink py-3 px-1 lg:px-3 rounded-r-md lg:rounded-r-lg lg:text-md bg-green-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
-          ref={saveBtn}
-          onClick={saveBarc}
-        >
-          Save
-        </button>
-      </div>
-      <div
-        className="hidden mt-2 bg-white border rounded-md border-gray-300 shadow-lg lg:rounded-lg"
-        ref={optionsDiv}
+    <Collapse in={visible} animateOpacity>
+      <Box
+        m={2}
+        _hover={{ cursor: "pointer" }}
       >
-        <div className="px-3 py-3 space-y-2 lg:px-5 lg:space-y-3">
-          <label className="flex font-semibold items-center">
-            Barcode Width (px)
-            <input
-              className="flex-grow ml-2 p-1 shadow-inner border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400 rounded"
-              ref={barcWidthInput}
-              type="number"
-              step="20"
-              onChange={handleBarcWidthChange}
-            />
-          </label>
-          <label className="flex font-semibold items-center">
-            Barcode Height (mm)
-            <input
-              className="flex-grow ml-2 p-1 shadow-inner border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400 rounded"
-              ref={barcHeightInput}
-              type="number"
-              min="1"
-              onChange={forge}
-            />
-          </label>
-          <label className="flex font-semibold items-center">
-            <input
-              className="mr-2 w-4 h-4"
-              type="checkbox"
-              ref={includeTextCheckbox}
-              onClick={forge}
-            />
-            Include Text
-          </label>
-        </div>
-      </div>
-      <div
-        className="hidden mt-3 bg-red-100 border border-red-200 text-red-800 p-3 rounded lg:rounded-lg lg:p-5"
-        ref={outputDiv}
-      ></div>
-      <div className="mt-3 flex flex-col items-center">
-        <canvas ref={barcCanvas} className="hidden"></canvas>
-      </div>
-    </Layout>
+        <canvas
+          ref={barcCanvas}
+          style={{ width: `${barcSize}px` }}
+          onClick={handleCanvasClick}
+        ></canvas>
+      </Box>
+      <Center>
+        <VStack spacing={0}>
+          <Icon as={IoChevronUpOutline} w={8} h={8} color="gray.500"/>
+          <Text color="gray.500">{saveHint}</Text>
+        </VStack>
+      </Center>
+    </Collapse>
   );
 };
 
-export default Home;
+const BarcErrorMessage: React.FC<{ message?: string }> = ({ message }) => {
+  return message ? (
+    <Alert status="error">
+      <AlertIcon />
+      {message}
+    </Alert>
+  ) : null;
+};
+
+const Index: React.FC<{}> = () => {
+  const [studentID, setStudentID] = useState("");
+  const [barcSize, setBarcSize] = useState(window.innerWidth / 2);
+  const [includeText, setIncludeText] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  return (
+    <Grid minH="100vh">
+      <Center>
+        <VStack spacing={5} w={{ base: "90%", lg: "80%" }}>
+          <SEO title="School IDForge" />
+          <Nav />
+          <IDInput onIDChange={setStudentID} onTextClick={setIncludeText} />
+          <BarcSizeInput onChange={setBarcSize} />
+          <BarcErrorMessage message={error} />
+          <BarcCanvas
+            barcSize={barcSize}
+            setError={setError}
+            studentID={studentID}
+            includeText={includeText}
+          />
+        </VStack>
+      </Center>
+    </Grid>
+  );
+};
+
+export default Index;
