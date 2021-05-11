@@ -1,13 +1,7 @@
 [
   {
     "version": "3.0.0",
-    "changes": [
-      "+ Rewrite Design in Chakra UI",
-      "+ Update bwip-js to v3",
-      "+ Major bundle size reduction",
-      "+ Things should be faster",
-      "* Update all dependencies"
-    ]
+    "changes": ["+ Rewrite Design in Chakra UI", "* Update all dependencies"]
   },
   {
     "version": "2.1.0",

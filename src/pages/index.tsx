@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import SEO from "../components/seo";
 import { Link as GatsbyLink } from "gatsby";
-// @types/bwip-js doesn't support v3 yet
-//@ts-ignore
-import { code128 } from "bwip-js";
+import bwipjs from "bwip-js";
 import {
   useColorMode,
   useBreakpointValue,
@@ -159,19 +157,24 @@ const IDInput: React.FC<{
 
 const BarcSizeInput: React.FC<{
   onChange: (value: number) => any;
-}> = ({ onChange }) => (
-  <Slider
-    defaultValue={window.innerWidth / 2}
-    min={100}
-    max={window.innerWidth}
-    onChange={onChange}
-  >
-    <SliderTrack>
-      <SliderFilledTrack />
-    </SliderTrack>
-    <SliderThumb boxSize={6} />
-  </Slider>
-);
+}> = ({ onChange }) => {
+  const [windowInnerWidth, setWindowInnerWidth] = useState(200);
+  useEffect(() => setWindowInnerWidth(window.innerWidth), []);
+
+  return (
+    <Slider
+      defaultValue={windowInnerWidth / 2}
+      min={100}
+      max={windowInnerWidth}
+      onChange={onChange}
+    >
+      <SliderTrack>
+        <SliderFilledTrack />
+      </SliderTrack>
+      <SliderThumb boxSize={6} />
+    </Slider>
+  );
+};
 
 const BarcCanvas: React.FC<{
   studentID: string;
@@ -205,14 +208,16 @@ const BarcCanvas: React.FC<{
     const { valid, message } = validateID();
     if (!valid) return handleError(message);
     try {
-      code128(barcCanvas.current!, {
+      bwipjs.toCanvas(barcCanvas.current!, {
+        bcid: "code128",
         text: studentID,
         scale: 10,
         height: 20,
         includetext: includeText,
         textxalign: "center",
         backgroundcolor: "ffffff",
-        padding: 5,
+        paddingwidth: 5,
+        paddingheight: 5,
       });
       setError();
       setVisible(true);
@@ -271,9 +276,10 @@ const BarcErrorMessage: React.FC<{ message?: string }> = ({ message }) => {
 
 const Index: React.FC<{}> = () => {
   const [studentID, setStudentID] = useState("");
-  const [barcSize, setBarcSize] = useState(window.innerWidth / 2);
+  const [barcSize, setBarcSize] = useState(200);
   const [includeText, setIncludeText] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
+  useEffect(() => setBarcSize(window.innerWidth / 2), []);
 
   return (
     <Grid minH="100vh">
