@@ -1,7 +1,19 @@
 [
   {
+    "version": "3.0.1",
+    "changes": [
+      "+ Fix weird 404 page",
+      "+ Make nav icon sizes responsive",
+      "* More small tweaks and bugfixes"
+    ]
+  },
+  {
     "version": "3.0.0",
-    "changes": ["+ Rewrite Design in Chakra UI", "* Update all dependencies"]
+    "changes": [
+      "+ Rewrite Design in Chakra UI",
+      "* Update all dependencies",
+      "- Get rid of options"
+    ]
   },
   {
     "version": "2.1.0",
