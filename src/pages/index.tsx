@@ -72,7 +72,7 @@ const NavItem: React.FC<{
 const Nav: React.FC<{}> = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <HStack spacing={5}>
+    <HStack spacing={{ base: 2, md: 5 }}>
       <NavItem
         icon={<IoHelpCircleOutline />}
         label="Help"
@@ -171,7 +171,7 @@ const BarcSizeInput: React.FC<{
       <SliderTrack>
         <SliderFilledTrack />
       </SliderTrack>
-      <SliderThumb boxSize={6} />
+      <SliderThumb boxSize={5} />
     </Slider>
   );
 };
