@@ -1,5 +1,9 @@
 [
   {
+    "version": "3.0.2",
+    "changes": ["* Update all dependencies"]
+  },
+  {
     "version": "3.0.1",
     "changes": [
       "+ Fix weird 404 page",
