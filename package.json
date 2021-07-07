@@ -1,47 +1,33 @@
 {
-  "name": "schoolidforge",
-  "private": true,
-  "description": "A simple tool that generates an ID Card Barcode from a Student ID.",
-  "version": "07.11.20",
-  "license": "DBAD",
+  "version": "3.0.2",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\""
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "format": "prettier -w \"**/*.{js,jsx,ts,tsx,json,md,yml}\""
   },
   "dependencies": {
-    "@chakra-ui/gatsby-plugin": "^2.0.1",
     "@chakra-ui/react": "^1.6.4",
-    "@emotion/react": "^11.4.0",
+    "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/roboto": "^4.4.5",
     "@fontsource/roboto-mono": "^4.4.5",
-    "bwip-js": "3.0.1",
-    "framer-motion": "^4.1.17",
-    "fs": "0.0.1-security",
-    "gatsby": "^3.9.0",
-    "gatsby-plugin-manifest": "^3.9.0",
-    "gatsby-plugin-offline": "^4.9.0",
-    "gatsby-plugin-react-helmet": "^4.9.0",
-    "gatsby-plugin-robots-txt": "^1.6.8",
-    "gatsby-plugin-sass": "^4.9.0",
-    "gatsby-plugin-sitemap": "^4.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "bwip-js": "^3.0.1",
+    "framer-motion": "^4",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.2.0"
   },
   "devDependencies": {
     "@types/bwip-js": "^2.1.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.1",
-    "@typescript-eslint/eslint-plugin": "^4.28.2",
-    "@typescript-eslint/parser": "^4.28.2",
-    "eslint": "^7.30.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
+    "@vitejs/plugin-react-refresh": "^1.3.1",
     "prettier": "^2.3.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.2",
+    "vite": "^2.4.0"
   }
 }

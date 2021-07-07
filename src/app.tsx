@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import SEO from "../components/seo";
-import { Link as GatsbyLink } from "gatsby";
+import SEO from "./seo";
 import bwipjs from "bwip-js";
 import {
   useColorMode,
@@ -41,31 +40,18 @@ import {
 const NavItem: React.FC<{
   icon: JSX.Element;
   label: string;
-  variant: "internal" | "external";
   to: string;
-}> = ({ icon, label, variant, to }) => (
+}> = ({ icon, label, to }) => (
   <Tooltip placement="top" label={label} aria-label="navigation item tooltip">
-    {variant == "internal" ? (
-      <Link as={GatsbyLink} to={to} _hover={undefined}>
-        <IconButton
-          icon={icon}
-          variant="ghost"
-          aria-label={label}
-          size="lg"
-          fontSize="25px"
-        />
-      </Link>
-    ) : (
-      <Link href={to} _hover={undefined}>
-        <IconButton
-          icon={icon}
-          variant="ghost"
-          aria-label={label}
-          size="lg"
-          fontSize="25px"
-        />
-      </Link>
-    )}
+    <Link href={to} _hover={undefined}>
+      <IconButton
+        icon={icon}
+        variant="ghost"
+        aria-label={label}
+        size="lg"
+        fontSize="25px"
+      />
+    </Link>
   </Tooltip>
 );
 
@@ -76,31 +62,26 @@ const Nav: React.FC<{}> = () => {
       <NavItem
         icon={<IoHelpCircleOutline />}
         label="Help"
-        variant="external"
-        to="https://github.com/neelkarma/schoolidforge#usage"
+        to="https://github.com/neelkarma/schoolidforge/blob/master/README.md#usage"
       />
       <NavItem
         icon={<IoBugOutline />}
         label="Report a Bug"
-        variant="external"
-        to="https://github.com/neelkarma/schoolidforge/blob/master/CONTRIBUTING.md"
+        to="https://github.com/neelkarma/schoolidforge/issues/new"
       />
       <NavItem
         icon={<IoInformationCircleOutline />}
         label="About"
-        variant="internal"
-        to="/about"
+        to="https://github.com/neelkarma/schoolidforge/blob/master/ABOUT.md"
       />
       <NavItem
         icon={<IoTimeOutline />}
         label="Changelog"
-        variant="internal"
-        to="/changelog"
+        to="https://github.com/neelkarma/schoolidforge/blob/master/CHANGELOG.md"
       />
       <NavItem
         icon={<IoLogoGithub />}
         label="Source"
-        variant="external"
         to="https://github.com/neelkarma/schoolidforge"
       />
       <Tooltip
@@ -274,7 +255,7 @@ const BarcErrorMessage: React.FC<{ message?: string }> = ({ message }) => {
   ) : null;
 };
 
-const Index: React.FC<{}> = () => {
+const App: React.FC<{}> = () => {
   const [studentID, setStudentID] = useState("");
   const [barcSize, setBarcSize] = useState(200);
   const [includeText, setIncludeText] = useState(false);
@@ -302,4 +283,4 @@ const Index: React.FC<{}> = () => {
   );
 };
 
-export default Index;
+export default App;
