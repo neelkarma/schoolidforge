@@ -1,5 +1,12 @@
 # School IDForge Changelog
 
+## Version 3.1.0
+
+- Dev: Switch to Vite
+- Change: Report a Bug link directly goes to New Issue Page
+- Change: About link goes to ABOUT.md on GitHub
+- Change: Changelog link goes to CHANGELOG.md on GitHub
+
 ## Version 3.0.2
 
 - Chore: Update all dependencies
