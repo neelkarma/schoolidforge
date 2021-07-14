@@ -1,11 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import SEO from "./seo";
-import bwipjs from "bwip-js";
 import {
   useColorMode,
-  useBreakpointValue,
-  Box,
-  Icon,
   InputGroup,
   Input,
   InputRightElement,
@@ -18,12 +14,11 @@ import {
   Tooltip,
   Alert,
   AlertIcon,
-  Collapse,
   Grid,
   Center,
   VStack,
   HStack,
-  Text,
+  Spinner,
 } from "@chakra-ui/react";
 import {
   IoTextOutline,
@@ -34,8 +29,9 @@ import {
   IoInformationCircleOutline,
   IoSunnyOutline,
   IoMoonOutline,
-  IoChevronUpOutline,
 } from "react-icons/io5";
+
+const BarcCanvas = React.lazy(() => import("./barcode"));
 
 const NavItem: React.FC<{
   icon: JSX.Element;
@@ -140,13 +136,13 @@ const BarcSizeInput: React.FC<{
   onChange: (value: number) => any;
 }> = ({ onChange }) => {
   const [windowInnerWidth, setWindowInnerWidth] = useState(200);
-  useEffect(() => setWindowInnerWidth(window.innerWidth), []);
+  useEffect(() => setWindowInnerWidth(window.innerWidth), [window.innerWidth]);
 
   return (
     <Slider
-      defaultValue={windowInnerWidth / 2}
+      defaultValue={(() => window.innerWidth / 2)()}
       min={100}
-      max={windowInnerWidth}
+      max={(windowInnerWidth * 4) / 5}
       onChange={onChange}
     >
       <SliderTrack>
@@ -154,95 +150,6 @@ const BarcSizeInput: React.FC<{
       </SliderTrack>
       <SliderThumb boxSize={5} />
     </Slider>
-  );
-};
-
-const BarcCanvas: React.FC<{
-  studentID: string;
-  includeText: boolean;
-  barcSize: number;
-  setError: (message?: string) => any;
-}> = ({ studentID, includeText, barcSize, setError }) => {
-  const [visible, setVisible] = useState(false);
-  const barcCanvas = useRef<HTMLCanvasElement>(null);
-  const saveHint = useBreakpointValue({
-    base: "Tap to Save!",
-    md: "Click to Save!",
-  });
-
-  const handleError = (message?: string) => {
-    setVisible(false);
-    setError(message);
-  };
-
-  const validateID = (): { valid: boolean; message?: string } => {
-    if (studentID.trim().length < 9) return { valid: false };
-    if (isNaN(Number(studentID.trim())) || studentID.trim().length > 9)
-      return {
-        valid: false,
-        message: `${studentID.trim()} is not a valid student ID!`,
-      };
-    return { valid: true };
-  };
-
-  const forge = () => {
-    const { valid, message } = validateID();
-    if (!valid) return handleError(message);
-    try {
-      bwipjs.toCanvas(barcCanvas.current!, {
-        bcid: "code128",
-        text: studentID,
-        scale: 10,
-        height: 20,
-        includetext: includeText,
-        textxalign: "center",
-        backgroundcolor: "ffffff",
-        paddingwidth: 5,
-        paddingheight: 5,
-      });
-      setError();
-      setVisible(true);
-    } catch (e) {
-      handleError(e);
-    }
-  };
-
-  const handleCanvasClick: React.MouseEventHandler<HTMLCanvasElement> = (
-    event
-  ) => {
-    if (!visible) return;
-    // Not using type casting creates a type error, not sure why
-    (event.target as HTMLCanvasElement).toBlob((blob) => {
-      const blobUrl = URL.createObjectURL(blob);
-      const blobAnchor = document.createElement("a");
-      blobAnchor.href = blobUrl;
-      blobAnchor.download = `${studentID!.trim()}-barcode`;
-      blobAnchor.click();
-      setTimeout(() => {
-        blobAnchor.remove();
-        window.URL.revokeObjectURL(blobUrl);
-      }, 0);
-    });
-  };
-
-  useEffect(forge, [studentID, includeText]);
-
-  return (
-    <Collapse in={visible} animateOpacity>
-      <Box m={2} _hover={{ cursor: "pointer" }}>
-        <canvas
-          ref={barcCanvas}
-          style={{ width: `${barcSize}px` }}
-          onClick={handleCanvasClick}
-        ></canvas>
-      </Box>
-      <Center>
-        <VStack spacing={0}>
-          <Icon as={IoChevronUpOutline} w={8} h={8} color="gray.500" />
-          <Text color="gray.500">{saveHint}</Text>
-        </VStack>
-      </Center>
-    </Collapse>
   );
 };
 
@@ -271,12 +178,14 @@ const App: React.FC<{}> = () => {
           <IDInput onIDChange={setStudentID} onTextClick={setIncludeText} />
           <BarcSizeInput onChange={setBarcSize} />
           <BarcErrorMessage message={error} />
-          <BarcCanvas
-            barcSize={barcSize}
-            setError={setError}
-            studentID={studentID}
-            includeText={includeText}
-          />
+          <Suspense fallback={<Spinner />}>
+            <BarcCanvas
+              barcSize={barcSize}
+              setError={setError}
+              studentID={studentID}
+              includeText={includeText}
+            />
+          </Suspense>
         </VStack>
       </Center>
     </Grid>
