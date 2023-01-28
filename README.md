@@ -4,7 +4,16 @@
 
 A mobile app for storing and easily using multiple SBHS Student ID barcodes.
 
-## Build Instructions
+## Installation
+
+Download the latest `.apk` file (Android) or `.app` file (iOS) from
+[Github Actions](https://github.com/neelkarma/schoolidforge/actions/) and
+sideload onto your device accordingly.
+
+> Warning: iOS support is untested and may be extremely buggy since I don't have
+> access to a Mac nor an iPhone.
+
+## Building
 
 1. Install the Flutter SDK.
 2. Clone this repo and open it in a terminal.
