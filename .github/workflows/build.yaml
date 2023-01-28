@@ -2,9 +2,9 @@ name: Build
 on:
   push:
     paths:
-      - "lib/"
-      - "android/"
-      - "ios/"
+      - "lib/**/*"
+      - "android/**/*"
+      - "ios/**/*"
   workflow_dispatch:
 
 jobs:
