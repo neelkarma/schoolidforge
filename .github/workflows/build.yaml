@@ -23,7 +23,7 @@ jobs:
       - run: flutter build apk
       - uses: actions/upload-artifact@v3
         with:
-          name: schoolidforge-android.apk
+          name: schoolidforge-android
           path: build/app/outputs/flutter-apk/app-release.apk
 
   build-ios:
@@ -37,5 +37,5 @@ jobs:
       - run: flutter build ios --no-codesign
       - uses: actions/upload-artifact@v3
         with:
-          name: schoolidforge-ios.app
+          name: schoolidforge-ios
           path: build/ios/iphoneos/Runner.app
