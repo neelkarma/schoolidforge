@@ -124,8 +124,8 @@ class _ViewScreenState extends State<ViewScreen> {
   }
 
   Future<void> _export(BuildContext context) async {
-    final image = img.Image(300, 120);
-    img.fill(image, img.getColor(255, 255, 255));
+    final image = img.Image(width: 300, height: 120);
+    img.fill(image, color: img.ColorRgb8(255, 255, 255));
     drawBarcode(
       image,
       Barcode.code128(),

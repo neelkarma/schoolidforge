@@ -79,22 +79,23 @@ class NewBarcodeScreen extends StatelessWidget {
       ),
       body: MobileScanner(
         controller: _cameraController,
-        allowDuplicates: false,
-        onDetect: (barcode, args) async {
-          if (barcode.rawValue == null || !isValid(barcode.rawValue)) {
-            debugPrint("Invalid barcode!");
-            return;
-          }
-          Navigator.pop(
-            context,
-            await Navigator.push<BarcodeInfo>(
+        onDetect: (capture) async {
+          for (final barcode in capture.barcodes) {
+            if (barcode.rawValue == null || !isValid(barcode.rawValue)) {
+              debugPrint("Invalid barcode!");
+              return;
+            }
+            Navigator.pop(
               context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    EditScreen.fromStudentId(barcode.rawValue!),
+              await Navigator.push<BarcodeInfo>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EditScreen.fromStudentId(barcode.rawValue!),
+                ),
               ),
-            ),
-          );
+            );
+          }
         },
       ),
     );

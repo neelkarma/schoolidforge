@@ -35,7 +35,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  mobile_scanner: ^2.1.0
+  mobile_scanner: ^3.2.0
   sqflite: ^2.2.4+1
   barcode_widget: ^2.0.3
   screen_brightness: ^0.2.2
@@ -43,10 +43,10 @@ dependencies:
   url_launcher: ^6.1.8
   flutter_file_dialog: ^3.0.0
   barcode_image: ^2.0.2
-  image: ^3.3.0
+  image: ^4.0.17
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
