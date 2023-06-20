@@ -46,7 +46,7 @@ class _EditFormState extends State<EditForm> {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -63,7 +63,6 @@ class _EditFormState extends State<EditForm> {
                 return null;
               },
             ),
-            const SizedBox(height: 10),
             TextFormField(
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
@@ -81,10 +80,19 @@ class _EditFormState extends State<EditForm> {
                 return null;
               },
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text("Save"),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Cancel"),
+                ),
+                FilledButton(
+                  onPressed: _submit,
+                  child: const Text("Save"),
+                ),
+              ],
             ),
           ],
         ),

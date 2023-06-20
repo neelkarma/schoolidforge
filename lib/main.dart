@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:schoolidforge/db.dart";
 import "package:schoolidforge/new.dart";
+import "package:schoolidforge/utils.dart";
 import "package:schoolidforge/view.dart";
 import "package:url_launcher/url_launcher.dart";
 
@@ -35,113 +36,201 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _db = BarcodeInfoDatabase.instance;
+  var _studentsFut = BarcodeInfoDatabase.instance.getAll();
+  var _searchIsActive = false;
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(
+      () => setState(() {}),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("School IDForge"),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: HomePagePopupActions.deleteAll,
-                child: Text("Delete All"),
-              ),
-              const PopupMenuItem(
-                value: HomePagePopupActions.about,
-                child: Text("About"),
-              )
-            ],
-            onSelected: _action,
-          )
-        ],
-      ),
-      body: FutureBuilder(
-        future: _db.getAll(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text(
-                  "Forge your first student ID by clicking the '+' below!"),
-            );
-          }
-
-          final barcInfoList = snapshot.data!;
-
-          return ListView.separated(
-            itemCount: barcInfoList.length,
-            itemBuilder: (context, index) => ListTile(
-              onTap: () async {
-                await Navigator.push<bool>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewScreen(barcInfoList[index]),
-                  ),
-                );
-                setState(() {});
-              },
-              title: Text(barcInfoList[index].name),
-              subtitle: Text(barcInfoList[index].studentId),
+    return WillPopScope(
+      onWillPop: () async {
+        if (!_searchIsActive) return true;
+        setState(() {
+          _searchController.clear();
+          _searchIsActive = false;
+        });
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: _searchIsActive
+              ? TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(hintText: "Search..."),
+                )
+              : const Text("School IDForge"),
+          actions: [
+            IconButton(
+              icon: _searchIsActive
+                  ? const Icon(Icons.close)
+                  : const Icon(Icons.search),
+              onPressed: () => setState(() {
+                _searchController.clear();
+                _searchIsActive = !_searchIsActive;
+              }),
             ),
-            separatorBuilder: (context, index) => const Divider(),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _new,
-        child: const Icon(Icons.add),
+            PopupMenuButton(
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: HomePagePopupActions.deleteAll,
+                  child: Text("Delete All"),
+                ),
+                const PopupMenuItem(
+                  value: HomePagePopupActions.about,
+                  child: Text("About"),
+                )
+              ],
+              onSelected: (value) {
+                switch (value) {
+                  case HomePagePopupActions.deleteAll:
+                    _handleDeleteAll();
+                    return;
+                  case HomePagePopupActions.about:
+                    _handleAbout();
+                    return;
+                }
+              },
+            )
+          ],
+        ),
+        body: FutureBuilder(
+          future: _studentsFut,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text(
+                    "Forge your first student ID by clicking the '+' below!"),
+              );
+            }
+
+            // Search filtering
+            final students = snapshot.data!
+                .where((student) =>
+                    student.name
+                        .toLowerCase()
+                        .contains(_searchController.text.toLowerCase()) ||
+                    student.studentId.contains(_searchController.text))
+                .toList();
+
+            if (students.isEmpty) {
+              return const Center(
+                child: Text("No results found."),
+              );
+            }
+
+            return ListView.separated(
+              itemCount: students.length,
+              itemBuilder: (context, index) =>
+                  _buildStudentTile(students[index]),
+              separatorBuilder: (context, index) => const Divider(),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _new,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
 
-  Future<void> _action(HomePagePopupActions value) async {
-    switch (value) {
-      case HomePagePopupActions.deleteAll:
-        final confirmation = await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("Confirmation"),
-            content: const Text(
-                "Are you sure you want to delete all saved student IDs? This action is irreversible."),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text(
-                  "Yes",
-                  style: TextStyle(color: Colors.redAccent),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text("No"),
-              )
-            ],
+  Widget _buildStudentTile(BarcodeInfo student) {
+    return Dismissible(
+      key: Key(student.id!.toString()),
+      background: _buildDismissibleBackground(DismissDirection.startToEnd),
+      secondaryBackground:
+          _buildDismissibleBackground(DismissDirection.endToStart),
+      child: ListTile(
+        onTap: () async {
+          await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewScreen(student),
+            ),
+          );
+          _triggerRefresh();
+        },
+        title: Text(student.name),
+        subtitle: Text(student.studentId),
+      ),
+      confirmDismiss: (direction) async {
+        return confirmDialog(
+            context, "Are you sure you want to delete \"${student.name}\"?");
+      },
+      onDismissed: (direction) async {
+        await _db.delete(student.id!);
+        _triggerRefresh();
+      },
+    );
+  }
+
+  Widget _buildDismissibleBackground(DismissDirection direction) {
+    return Container(
+      color: Colors.red,
+      child: Align(
+        alignment: direction == DismissDirection.startToEnd
+            ? Alignment.centerLeft
+            : Alignment.centerRight,
+        child: Padding(
+          padding: direction == DismissDirection.startToEnd
+              ? const EdgeInsets.only(left: 16)
+              : const EdgeInsets.only(right: 16),
+          child: const Icon(
+            Icons.delete,
+            color: Colors.white,
           ),
-        );
-        if (confirmation ?? false) {
-          await _db.deleteAll();
-          setState(() {});
-        }
-        return;
-      case HomePagePopupActions.about:
-        return showAboutDialog(
-          context: context,
-          children: [
-            const Text("Made by iamkneel"),
-            ElevatedButton(
-              onPressed: () => launchUrl(
-                Uri.parse("https://github.com/neelkarma"),
-              ),
-              child: const Text("GitHub"),
-            )
-          ],
-        );
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleDeleteAll() async {
+    final confirmation = await confirmDialog(context,
+        "Are you sure you want to delete all saved student IDs? This action is irreversible.");
+
+    if (confirmation) {
+      await _db.deleteAll();
+      _triggerRefresh();
     }
+  }
+
+  void _handleAbout() {
+    showAboutDialog(
+      context: context,
+      children: [
+        const Text("Made by iamkneel"),
+        ElevatedButton(
+          onPressed: () => launchUrl(
+            Uri.parse("https://github.com/neelkarma/schoolidforge"),
+          ),
+          child: const Text("Source"),
+        )
+      ],
+    );
+  }
+
+  void _triggerRefresh() {
+    _studentsFut = _db.getAll();
+    setState(() {});
   }
 
   Future<void> _new() async {
@@ -153,6 +242,6 @@ class _HomePageState extends State<HomePage> {
     );
     if (newBarcode == null) return;
     await _db.insert(newBarcode);
-    setState(() {});
+    _triggerRefresh();
   }
 }

@@ -35,6 +35,9 @@ class BarcodeInfoDatabase {
 
   BarcodeInfoDatabase._create();
 
+  /// Initializes the database singleton.
+  ///
+  /// Make sure to call this as early as possible.
   Future init() async {
     _db = await openDatabase(
       dbPath,
@@ -51,14 +54,17 @@ class BarcodeInfoDatabase {
     );
   }
 
+  // idk how to do singletons in dart, so this is how we're doing it.
   static BarcodeInfoDatabase get instance => _instance;
 
+  /// Gets all [BarcodeInfo]s from DB.
   Future<List<BarcodeInfo>> getAll() async {
     final res = await _db
         .query(table, columns: [idColumn, studentIdColumn, nameColumn]);
     return res.map(BarcodeInfo.fromMap).toList();
   }
 
+  /// Gets a specific [BarcodeInfo] from DB, given it's ID.
   Future<BarcodeInfo?> get(int id) async {
     final maps = await _db.query(
       table,
@@ -74,11 +80,13 @@ class BarcodeInfoDatabase {
     return null;
   }
 
+  /// Inserts a new [BarcodeInfo] into DB
   Future<BarcodeInfo> insert(BarcodeInfo barcInfo) async {
     barcInfo.id = await _db.insert(table, barcInfo.toMap());
     return barcInfo;
   }
 
+  /// Deletes a [BarcodeInfo] with the given ID from DB
   Future<int> delete(int id) async {
     return await _db.delete(
       table,
@@ -87,10 +95,14 @@ class BarcodeInfoDatabase {
     );
   }
 
+  /// Nukes the DB. Be careful with this.
   Future<int> deleteAll() async {
     return await _db.delete(table);
   }
 
+  /// Updates an existing [BarcodeInfo] in the DB.
+  ///
+  /// Ensure that the [BarcodeInfo] has it's ID defined.
   Future<int> update(BarcodeInfo barcInfo) async {
     return await _db.update(
       table,

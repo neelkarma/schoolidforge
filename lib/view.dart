@@ -7,6 +7,7 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:image/image.dart' as img;
 import 'package:schoolidforge/db.dart';
 import 'package:schoolidforge/edit.dart';
+import 'package:schoolidforge/utils.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -21,7 +22,6 @@ class ViewScreen extends StatefulWidget {
 
 class _ViewScreenState extends State<ViewScreen> {
   final _db = BarcodeInfoDatabase.instance;
-  final _screenBright = ValueNotifier(false);
   late BarcodeInfo _barcInfo;
   double _barcWidth = 0.5;
 
@@ -29,6 +29,8 @@ class _ViewScreenState extends State<ViewScreen> {
   void initState() {
     super.initState();
     _barcInfo = widget.barcInfo;
+    Wakelock.enable();
+    ScreenBrightness().setScreenBrightness(1);
   }
 
   @override
@@ -70,35 +72,16 @@ class _ViewScreenState extends State<ViewScreen> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Slider(
-                    min: 0.2,
-                    max: 1,
-                    value: _barcWidth,
-                    onChanged: (value) {
-                      setState(() {
-                        _barcWidth = value;
-                      });
-                    },
-                  ),
-                ),
-                IconButton(
-                  onPressed: _toggleBright,
-                  icon: ValueListenableBuilder(
-                    valueListenable: _screenBright,
-                    builder: (context, value, child) {
-                      if (value) {
-                        return const Icon(Icons.brightness_high);
-                      } else {
-                        return const Icon(Icons.brightness_low);
-                      }
-                    },
-                  ),
-                )
-              ],
-            )
+            Slider(
+              min: 0.2,
+              max: 1,
+              value: _barcWidth,
+              onChanged: (value) {
+                setState(() {
+                  _barcWidth = value;
+                });
+              },
+            ),
           ],
         ),
       ),
@@ -107,10 +90,9 @@ class _ViewScreenState extends State<ViewScreen> {
 
   @override
   void dispose() {
-    if (_screenBright.value) {
-      _toggleBright();
-    }
     super.dispose();
+    Wakelock.disable();
+    ScreenBrightness().resetScreenBrightness();
   }
 
   Future<void> _edit(BuildContext context) async {
@@ -148,40 +130,11 @@ class _ViewScreenState extends State<ViewScreen> {
   }
 
   Future<void> _delete(BuildContext context) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Confirmation"),
-        content: const Text("Are you sure you want to delete this student ID?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              "Yes",
-              style: TextStyle(color: Colors.redAccent),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text("No"),
-          ),
-        ],
-      ),
-    );
-    if (confirm == null || !confirm) return;
+    final confirmed = await confirmDialog(
+        context, "Are you sure you want to delete \"${_barcInfo.name}\"?");
+
+    if (!confirmed) return;
     await _db.delete(_barcInfo.id!);
     if (context.mounted) Navigator.pop(context);
-  }
-
-  Future<void> _toggleBright() async {
-    if (_screenBright.value) {
-      Wakelock.disable();
-      await ScreenBrightness().resetScreenBrightness();
-      _screenBright.value = false;
-    } else {
-      Wakelock.enable();
-      await ScreenBrightness().setScreenBrightness(1);
-      _screenBright.value = true;
-    }
   }
 }

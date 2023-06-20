@@ -7,8 +7,8 @@ import 'package:schoolidforge/utils.dart';
 class NewBarcodeScreen extends StatelessWidget {
   NewBarcodeScreen({super.key});
 
-  final _cameraController =
-      MobileScannerController(formats: [BarcodeFormat.code128]);
+  // SBHS student IDs all have Code128 barcodes.
+  final _controller = MobileScannerController(formats: [BarcodeFormat.code128]);
 
   @override
   Widget build(BuildContext context) {
@@ -20,84 +20,86 @@ class NewBarcodeScreen extends StatelessWidget {
         alignment: Alignment.bottomRight,
         child: Wrap(
           direction: Axis.horizontal,
+          spacing: 12,
           children: [
-            Container(
-              margin: const EdgeInsets.all(8),
-              child: FloatingActionButton.extended(
-                onPressed: () async {
-                  Navigator.pop(
-                    context,
-                    await Navigator.push<BarcodeInfo>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditScreen.blank(),
-                      ),
-                    ),
-                  );
+            FloatingActionButton.extended(
+              onPressed: () => _manualEntry(context),
+              label: const Text("Enter Manually"),
+            ),
+            FloatingActionButton(
+              heroTag: null,
+              onPressed: _controller.switchCamera,
+              child: ValueListenableBuilder(
+                valueListenable: _controller.cameraFacingState,
+                builder: (context, value, child) {
+                  switch (value) {
+                    case CameraFacing.back:
+                      return const Icon(Icons.camera_front);
+                    case CameraFacing.front:
+                      return const Icon(Icons.camera_rear);
+                  }
                 },
-                label: const Text("Enter Manually"),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.all(8),
-              child: FloatingActionButton(
-                heroTag: null,
-                onPressed: () => _cameraController.switchCamera(),
-                child: ValueListenableBuilder(
-                  valueListenable: _cameraController.cameraFacingState,
-                  builder: (context, value, child) {
-                    switch (value) {
-                      case CameraFacing.back:
-                        return const Icon(Icons.camera_front);
-                      case CameraFacing.front:
-                        return const Icon(Icons.camera_rear);
-                    }
-                  },
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(8),
-              child: FloatingActionButton(
-                heroTag: null,
-                onPressed: () => _cameraController.toggleTorch(),
-                child: ValueListenableBuilder(
-                  valueListenable: _cameraController.torchState,
-                  builder: (context, value, child) {
-                    switch (value) {
-                      case TorchState.off:
-                        return const Icon(Icons.flash_on);
-                      case TorchState.on:
-                        return const Icon(Icons.flash_off);
-                    }
-                  },
-                ),
+            FloatingActionButton(
+              heroTag: null,
+              onPressed: _controller.toggleTorch,
+              child: ValueListenableBuilder(
+                valueListenable: _controller.torchState,
+                builder: (context, value, child) {
+                  switch (value) {
+                    case TorchState.off:
+                      return const Icon(Icons.flash_on);
+                    case TorchState.on:
+                      return const Icon(Icons.flash_off);
+                  }
+                },
               ),
             ),
           ],
         ),
       ),
       body: MobileScanner(
-        controller: _cameraController,
-        onDetect: (capture) async {
-          for (final barcode in capture.barcodes) {
-            if (barcode.rawValue == null || !isValid(barcode.rawValue)) {
-              debugPrint("Invalid barcode!");
-              return;
-            }
-            Navigator.pop(
-              context,
-              await Navigator.push<BarcodeInfo>(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      EditScreen.fromStudentId(barcode.rawValue!),
-                ),
-              ),
-            );
-          }
-        },
+        controller: _controller,
+        onDetect: (capture) => _handleDetect(context, capture),
       ),
     );
+  }
+
+  Future<void> _manualEntry(BuildContext context) async {
+    Navigator.pop(
+      context,
+      await Navigator.push<BarcodeInfo>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditScreen.blank(),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleDetect(
+      BuildContext context, BarcodeCapture capture) async {
+    for (final barcode in capture.barcodes) {
+      if (barcode.rawValue == null || !isValid(barcode.rawValue)) {
+        debugPrint("Invalid barcode!");
+        continue;
+      }
+
+      // This fixes duplicate edit screens as a result of detection happening even after navigation.
+      // It isn't the best solution, as it prevents us from using the NewBarcodeScreen instance again after detecting one barcode. Too bad!
+      _controller.stop();
+
+      Navigator.pop(
+        context,
+        await Navigator.push<BarcodeInfo>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditScreen.fromStudentId(barcode.rawValue!),
+          ),
+        ),
+      );
+      break;
+    }
   }
 }
