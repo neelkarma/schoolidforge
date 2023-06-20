@@ -67,6 +67,9 @@ class NewBarcodeScreen extends StatelessWidget {
   }
 
   Future<void> _manualEntry(BuildContext context) async {
+    // See similar line in _handleDetect
+    _controller.stop();
+
     Navigator.pop(
       context,
       await Navigator.push<BarcodeInfo>(
