@@ -7,7 +7,7 @@ import 'package:schoolidforge/utils.dart';
 class NewBarcodeScreen extends StatelessWidget {
   NewBarcodeScreen({super.key});
 
-  // SBHS student IDs all have Code128 barcodes.
+  // SBHS student IDs use Code128 barcodes.
   final _controller = MobileScannerController(formats: [BarcodeFormat.code128]);
 
   @override
@@ -16,52 +16,39 @@ class NewBarcodeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Scan New Student ID"),
       ),
-      floatingActionButton: Align(
-        alignment: Alignment.bottomRight,
-        child: Wrap(
-          direction: Axis.horizontal,
-          spacing: 12,
-          children: [
-            FloatingActionButton.extended(
-              onPressed: () => _manualEntry(context),
-              label: const Text("Enter Manually"),
-            ),
-            FloatingActionButton(
-              heroTag: null,
-              onPressed: _controller.switchCamera,
-              child: ValueListenableBuilder(
-                valueListenable: _controller.cameraFacingState,
-                builder: (context, value, child) {
-                  switch (value) {
-                    case CameraFacing.back:
-                      return const Icon(Icons.camera_front);
-                    case CameraFacing.front:
-                      return const Icon(Icons.camera_rear);
-                  }
-                },
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Position the ID card barcode in the frame below:",
+                style: TextStyle(fontSize: 16),
               ),
-            ),
-            FloatingActionButton(
-              heroTag: null,
-              onPressed: _controller.toggleTorch,
-              child: ValueListenableBuilder(
-                valueListenable: _controller.torchState,
-                builder: (context, value, child) {
-                  switch (value) {
-                    case TorchState.off:
-                      return const Icon(Icons.flash_on);
-                    case TorchState.on:
-                      return const Icon(Icons.flash_off);
-                  }
-                },
+              const SizedBox(height: 16),
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 250),
+                  child: MobileScanner(
+                    controller: _controller,
+                    onDetect: (capture) => _handleDetect(context, capture),
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              TextButton(
+                child: const Text('Enter manually instead'),
+                onPressed: () => _manualEntry(context),
+              )
+            ],
+          ),
         ),
-      ),
-      body: MobileScanner(
-        controller: _controller,
-        onDetect: (capture) => _handleDetect(context, capture),
       ),
     );
   }

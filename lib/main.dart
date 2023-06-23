@@ -190,11 +190,9 @@ class _HomePageState extends State<HomePage> {
         alignment: direction == DismissDirection.startToEnd
             ? Alignment.centerLeft
             : Alignment.centerRight,
-        child: Padding(
-          padding: direction == DismissDirection.startToEnd
-              ? const EdgeInsets.only(left: 16)
-              : const EdgeInsets.only(right: 16),
-          child: const Icon(
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Icon(
             Icons.delete,
             color: Colors.white,
           ),

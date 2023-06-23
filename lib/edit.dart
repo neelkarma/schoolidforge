@@ -58,21 +58,25 @@ class _EditFormState extends State<EditForm> {
               controller: _nameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter a name.";
+                  return "Please provide a name.";
                 }
                 return null;
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+              decoration: InputDecoration(
+                border: const UnderlineInputBorder(),
                 labelText: "Student ID",
+                suffixIcon: IconButton(
+                  onPressed: () => _showStudentIdInfo(context),
+                  icon: const Icon(Icons.info),
+                ),
               ),
               keyboardType: TextInputType.number,
               controller: _studentIdController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter an ID.";
+                  return "Please provide a student ID.";
                 }
                 if (!isValid(value)) {
                   return "Invalid Student ID.";
@@ -96,6 +100,23 @@ class _EditFormState extends State<EditForm> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _showStudentIdInfo(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Student ID"),
+        content: const Text(
+            "This is the 9-digit student ID that every student possesses. You can find it at the beginning of your school-issued email address or the bottom-left of your ID card."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Ok"),
+          )
+        ],
       ),
     );
   }
