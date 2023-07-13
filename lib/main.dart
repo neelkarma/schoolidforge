@@ -36,9 +36,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _db = BarcodeInfoDatabase.instance;
+  final _searchController = TextEditingController();
   var _studentsFut = BarcodeInfoDatabase.instance.getAll();
   var _searchIsActive = false;
-  final _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
     final newBarcode = await Navigator.push<BarcodeInfo>(
       context,
       MaterialPageRoute(
-        builder: (context) => NewBarcodeScreen(),
+        builder: (context) => const NewBarcodeFlow(),
       ),
     );
     if (newBarcode == null) return;

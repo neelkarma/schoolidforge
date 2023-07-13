@@ -3,26 +3,39 @@ import 'package:schoolidforge/db.dart';
 import 'package:schoolidforge/utils.dart';
 
 class EditScreen extends StatelessWidget {
-  const EditScreen(this.barcInfo, {super.key});
-  EditScreen.fromStudentId(String studentId, {super.key})
-      : barcInfo = BarcodeInfo(studentId, "");
-  EditScreen.blank({super.key}) : barcInfo = BarcodeInfo("", "");
+  const EditScreen({super.key, required this.barcInfo});
 
   final BarcodeInfo barcInfo;
+
+  void _onSubmit(BuildContext context, BarcodeInfo barcInfo) {
+    Navigator.of(context).pop(barcInfo);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Edit Student ID")),
-      body: EditForm(barcInfo),
+      body: EditForm(
+        barcInfo: barcInfo,
+        onSubmit: (barcInfo) => _onSubmit(context, barcInfo),
+      ),
     );
   }
 }
 
 class EditForm extends StatefulWidget {
-  const EditForm(this.barcInfo, {super.key});
+  static State<EditForm> of(BuildContext context) =>
+      context.findAncestorStateOfType<_EditFormState>()!;
+
+  const EditForm({super.key, required this.barcInfo, required this.onSubmit});
+  EditForm.fromStudentId(
+      {super.key, required studentId, required this.onSubmit})
+      : barcInfo = BarcodeInfo(studentId, "");
+  EditForm.blank({super.key, required this.onSubmit})
+      : barcInfo = BarcodeInfo("", "");
 
   final BarcodeInfo barcInfo;
+  final Function(BarcodeInfo barcInfo) onSubmit;
 
   @override
   State<EditForm> createState() => _EditFormState();
@@ -68,7 +81,7 @@ class _EditFormState extends State<EditForm> {
                 border: const UnderlineInputBorder(),
                 labelText: "Student ID",
                 suffixIcon: IconButton(
-                  onPressed: () => _showStudentIdInfo(context),
+                  onPressed: _showStudentIdInfo,
                   icon: const Icon(Icons.info),
                 ),
               ),
@@ -86,12 +99,8 @@ class _EditFormState extends State<EditForm> {
             ),
             const Spacer(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Cancel"),
-                ),
                 FilledButton(
                   onPressed: _submit,
                   child: const Text("Save"),
@@ -104,7 +113,7 @@ class _EditFormState extends State<EditForm> {
     );
   }
 
-  Future<void> _showStudentIdInfo(BuildContext context) async {
+  Future<void> _showStudentIdInfo() async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -123,8 +132,7 @@ class _EditFormState extends State<EditForm> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    Navigator.pop(
-      context,
+    widget.onSubmit(
       BarcodeInfo(
         _studentIdController.text,
         _nameController.text,

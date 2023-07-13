@@ -12,6 +12,9 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock/wakelock.dart';
 
 class ViewScreen extends StatefulWidget {
+  static State<ViewScreen> of(BuildContext context) =>
+      context.findAncestorStateOfType<_ViewScreenState>()!;
+
   const ViewScreen(this.barcInfo, {super.key});
 
   final BarcodeInfo barcInfo;
@@ -40,15 +43,15 @@ class _ViewScreenState extends State<ViewScreen> {
         title: Text("${_barcInfo.name} (${_barcInfo.studentId})"),
         actions: [
           IconButton(
-            onPressed: () => _edit(context),
+            onPressed: _edit,
             icon: const Icon(Icons.edit),
           ),
           IconButton(
-            onPressed: () => _export(context),
+            onPressed: _export,
             icon: const Icon(Icons.save),
           ),
           IconButton(
-            onPressed: () => _delete(context),
+            onPressed: _delete,
             icon: const Icon(Icons.delete),
           ),
         ],
@@ -95,17 +98,17 @@ class _ViewScreenState extends State<ViewScreen> {
     ScreenBrightness().resetScreenBrightness();
   }
 
-  Future<void> _edit(BuildContext context) async {
+  Future<void> _edit() async {
     final newBarcInfo = await Navigator.push<BarcodeInfo>(
       context,
-      MaterialPageRoute(builder: (context) => EditScreen(_barcInfo)),
+      MaterialPageRoute(builder: (context) => EditScreen(barcInfo: _barcInfo)),
     );
     if (newBarcInfo == null) return;
     await _db.update(newBarcInfo);
     setState(() => _barcInfo = newBarcInfo);
   }
 
-  Future<void> _export(BuildContext context) async {
+  Future<void> _export() async {
     final image = img.Image(width: 300, height: 120);
     img.fill(image, color: img.ColorRgb8(255, 255, 255));
     drawBarcode(
@@ -129,7 +132,7 @@ class _ViewScreenState extends State<ViewScreen> {
     }
   }
 
-  Future<void> _delete(BuildContext context) async {
+  Future<void> _delete() async {
     final confirmed = await confirmDialog(
         context, "Are you sure you want to delete \"${_barcInfo.name}\"?");
 

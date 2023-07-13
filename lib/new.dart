@@ -4,72 +4,141 @@ import 'package:schoolidforge/db.dart';
 import 'package:schoolidforge/edit.dart';
 import 'package:schoolidforge/utils.dart';
 
-class NewBarcodeScreen extends StatelessWidget {
-  NewBarcodeScreen({super.key});
+const scanRoute = "scan";
+const editRoute = "edit";
 
-  // SBHS student IDs use Code128 barcodes.
-  final _controller = MobileScannerController(formats: [BarcodeFormat.code128]);
+class NewBarcodeFlow extends StatefulWidget {
+  static State<NewBarcodeFlow> of(BuildContext context) =>
+      context.findAncestorStateOfType<_NewBarcodeFlowState>()!;
+
+  const NewBarcodeFlow({super.key});
+
+  @override
+  State<NewBarcodeFlow> createState() => _NewBarcodeFlowState();
+}
+
+class _NewBarcodeFlowState extends State<NewBarcodeFlow> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  void _onScanComplete(String? studentId) {
+    _navigatorKey.currentState!.pushNamed(editRoute, arguments: studentId);
+  }
+
+  void _onEditComplete(BarcodeInfo barcInfo) {
+    Navigator.of(context).pop(barcInfo);
+  }
+
+  Route _onGenerateRoute(RouteSettings settings) {
+    late Widget page;
+
+    switch (settings.name) {
+      case scanRoute:
+        page = ScanRoute(onComplete: _onScanComplete);
+        break;
+      case editRoute:
+        final studentId = settings.arguments as String?;
+        if (studentId == null) {
+          page = EditForm.blank(
+            onSubmit: _onEditComplete,
+          );
+        } else {
+          page = EditForm.fromStudentId(
+            studentId: studentId,
+            onSubmit: _onEditComplete,
+          );
+        }
+        break;
+    }
+
+    return MaterialPageRoute(
+      builder: (context) => page,
+      settings: settings,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Scan New Student ID"),
+        title: const Text("Add New Student ID"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Position the ID card barcode in the frame below:",
-                style: TextStyle(fontSize: 16),
+      body: Navigator(
+        key: _navigatorKey,
+        initialRoute: scanRoute,
+        onGenerateRoute: _onGenerateRoute,
+      ),
+    );
+  }
+}
+
+class ScanRoute extends StatefulWidget {
+  static State<ScanRoute> of(BuildContext context) {
+    return context.findAncestorStateOfType<_ScanRouteState>()!;
+  }
+
+  const ScanRoute({super.key, required this.onComplete});
+
+  final void Function(String? studentId) onComplete;
+
+  @override
+  State<ScanRoute> createState() => _ScanRouteState();
+}
+
+class _ScanRouteState extends State<ScanRoute> {
+  // SBHS student IDs use Code128 barcodes.
+  final _controller = MobileScannerController(formats: [BarcodeFormat.code128]);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Position the ID card barcode in the frame below:",
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
-              const SizedBox(height: 16),
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 250),
-                  child: MobileScanner(
-                    controller: _controller,
-                    onDetect: (capture) => _handleDetect(context, capture),
-                  ),
+              clipBehavior: Clip.hardEdge,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 250),
+                child: MobileScanner(
+                  controller: _controller,
+                  onDetect: _handleDetect,
                 ),
               ),
-              const SizedBox(height: 12),
-              TextButton(
-                child: const Text('Enter manually instead'),
-                onPressed: () => _manualEntry(context),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: _manualEntry,
+              child: const Text('Enter manually instead'),
+            )
+          ],
         ),
       ),
     );
   }
 
-  Future<void> _manualEntry(BuildContext context) async {
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.stop();
+  }
+
+  Future<void> _manualEntry() async {
     // See similar line in _handleDetect
     _controller.stop();
-
-    Navigator.pop(
-      context,
-      await Navigator.push<BarcodeInfo>(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditScreen.blank(),
-        ),
-      ),
-    );
+    widget.onComplete(null);
   }
 
-  Future<void> _handleDetect(
-      BuildContext context, BarcodeCapture capture) async {
+  Future<void> _handleDetect(BarcodeCapture capture) async {
     for (final barcode in capture.barcodes) {
       if (barcode.rawValue == null || !isValid(barcode.rawValue)) {
         debugPrint("Invalid barcode!");
@@ -80,15 +149,7 @@ class NewBarcodeScreen extends StatelessWidget {
       // It isn't the best solution, as it prevents us from using the NewBarcodeScreen instance again after detecting one barcode. Too bad!
       _controller.stop();
 
-      Navigator.pop(
-        context,
-        await Navigator.push<BarcodeInfo>(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditScreen.fromStudentId(barcode.rawValue!),
-          ),
-        ),
-      );
+      widget.onComplete(barcode.rawValue!);
       break;
     }
   }
